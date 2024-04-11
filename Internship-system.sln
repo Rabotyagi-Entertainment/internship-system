@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Internship-system.API", "Internship-system.API\Internship-system.API.csproj", "{9E65677A-AD0E-4748-88BE-35F2D9F64A5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Internship-system.BLL", "Internship-system.BLL\Internship-system.BLL.csproj", "{5F7BD6D0-2976-406F-AE64-42B71259CD58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Internship-system.DAL", "Internship-system.DAL\Internship-system.DAL.csproj", "{EBB27138-2BC2-4718-BA47-DFFE1388830F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9E65677A-AD0E-4748-88BE-35F2D9F64A5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E65677A-AD0E-4748-88BE-35F2D9F64A5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E65677A-AD0E-4748-88BE-35F2D9F64A5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E65677A-AD0E-4748-88BE-35F2D9F64A5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F7BD6D0-2976-406F-AE64-42B71259CD58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F7BD6D0-2976-406F-AE64-42B71259CD58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F7BD6D0-2976-406F-AE64-42B71259CD58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F7BD6D0-2976-406F-AE64-42B71259CD58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBB27138-2BC2-4718-BA47-DFFE1388830F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBB27138-2BC2-4718-BA47-DFFE1388830F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBB27138-2BC2-4718-BA47-DFFE1388830F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBB27138-2BC2-4718-BA47-DFFE1388830F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
