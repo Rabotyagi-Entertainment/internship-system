@@ -1,3 +1,5 @@
+using System.Runtime.Serialization;
+
 namespace Internship_system.DAL.Data.Entities.Enums;
 
 public enum ProgressStatus {
