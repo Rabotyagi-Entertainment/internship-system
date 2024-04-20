@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using Internship_system.BLL.Exceptions;
 using Internship_system.BLL.Extensions;
+using Internship_system.BLL.Services;
 using Internship_system.Configuration;
 using Serilog;
 
@@ -31,6 +32,8 @@ builder.Services.AddSwagger();
 
 builder.Services.AddAuthorization();
 builder.Services.AddJwtAuthentication(builder.Configuration);
+
+builder.Services.AddScoped<InternshipAdminService>();
 
 var logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)

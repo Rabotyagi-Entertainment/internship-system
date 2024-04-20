@@ -11,5 +11,5 @@ public class InternshipProgress {
     public string? AdditionalInfo { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? EditedAt { get; set; }
-    
+    public List<Comment> Comments { get; set; } = new();
 }
