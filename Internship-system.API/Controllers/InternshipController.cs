@@ -1,5 +1,4 @@
 using Internship_system.BLL.DTOs.Internship;
-using Internship_system.DAL.Data.Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

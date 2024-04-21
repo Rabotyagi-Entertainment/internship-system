@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Internship-system.BLL", "In
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Internship-system.DAL", "Internship-system.DAL\Internship-system.DAL.csproj", "{EBB27138-2BC2-4718-BA47-DFFE1388830F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "internship-system.Common", "internship-system.Common\internship-system.Common.csproj", "{A3973AAB-84EA-4C03-89FB-05C68F76B0A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{EBB27138-2BC2-4718-BA47-DFFE1388830F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBB27138-2BC2-4718-BA47-DFFE1388830F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBB27138-2BC2-4718-BA47-DFFE1388830F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3973AAB-84EA-4C03-89FB-05C68F76B0A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3973AAB-84EA-4C03-89FB-05C68F76B0A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3973AAB-84EA-4C03-89FB-05C68F76B0A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3973AAB-84EA-4C03-89FB-05C68F76B0A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

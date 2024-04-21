@@ -1,4 +1,4 @@
-using Internship_system.DAL.Data.Entities.Enums;
+using internship_system.Common.Enums;
 
 namespace Internship_system.DAL.Data.Entities;
 

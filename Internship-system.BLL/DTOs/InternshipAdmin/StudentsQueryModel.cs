@@ -1,4 +1,4 @@
-using Internship_system.DAL.Data.Entities.Enums;
+using internship_system.Common.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Internship_system.BLL.DTOs.InternshipAdmin;

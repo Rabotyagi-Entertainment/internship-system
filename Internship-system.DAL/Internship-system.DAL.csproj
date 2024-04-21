@@ -14,4 +14,8 @@
 
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\internship-system.Common\internship-system.Common.csproj" />
+    </ItemGroup>
+
 </Project>
