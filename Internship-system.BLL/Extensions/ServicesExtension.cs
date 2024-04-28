@@ -31,6 +31,7 @@ public static class ServicesExtension {
         
         
         services.AddScoped<AuthService>();
+        services.AddScoped<PracticeDiaryService>();
         services.AddScoped<InternshipService>();
         
         return services;
