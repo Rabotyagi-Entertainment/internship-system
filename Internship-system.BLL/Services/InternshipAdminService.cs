@@ -3,8 +3,10 @@ using Internship_system.BLL.Exceptions;
 using internship_system.Common.Enums;
 using Internship_system.DAL.Data;
 using Internship_system.DAL.Data.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 
 namespace Internship_system.BLL.Services;
 
@@ -31,9 +33,45 @@ public class InternshipAdminService
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task UploadStudents(List<UploadStudentDto> students)
+    public async Task UploadStudents(IFormFile studentsTable)
     {
-        foreach (var s in students)
+        if (studentsTable.Length > 0)
+        {
+            var uploadDir = $"{Directory.GetCurrentDirectory()}/Uploads";
+            if (!Directory.Exists(uploadDir))
+            {
+                Directory.CreateDirectory(uploadDir);
+            }
+
+            var filePath = Path.Combine(uploadDir, studentsTable.FileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await studentsTable.CopyToAsync(stream);
+            }
+
+            if (File.Exists(filePath))
+            {
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                ExcelPackage package = new ExcelPackage(new FileInfo(filePath));
+                ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+
+                int rowCount = worksheet.Dimension.Rows;
+                int colCount = worksheet.Dimension.Columns;
+
+                for (int row = 1; row <= rowCount; row++)
+                {
+                    for (int col = 1; col <= colCount; col++)
+                    {
+                        Console.WriteLine(worksheet.Cells[row, col].Value.ToString());
+                    }
+                }
+                
+                package.Dispose();
+            }
+        }
+        
+        /*foreach (var s in students)
         {
             var student = new Student()
             {
@@ -50,7 +88,7 @@ public class InternshipAdminService
             
             var studentEntity = await _userManager.FindByIdAsync(student.Id.ToString());
             await _userManager.AddToRoleAsync(studentEntity, ApplicationRoleNames.Student);
-        }
+        }*/
     }
 
     public async Task<List<StudentStatusDto>> GetStudentCompanies(Guid userId)

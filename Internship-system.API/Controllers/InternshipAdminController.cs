@@ -34,9 +34,9 @@ public class InternshipAdminController : ControllerBase
     /// </summary>
     [HttpPost]
     [Route("students")]
-    public async Task UploadStudents([FromBody] List<UploadStudentDto> students)
+    public async Task UploadStudents(IFormFile studentsTable)
     {
-        await _internshipAdminService.UploadStudents(students);
+        await _internshipAdminService.UploadStudents(studentsTable);
     }
 
     /// <summary>
