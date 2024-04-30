@@ -1,6 +1,6 @@
+using internship_system.Common.Enums;
 using Internship_system.DAL.Data;
 using Internship_system.DAL.Data.Entities;
-using Internship_system.DAL.Data.Entities.Enums;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;

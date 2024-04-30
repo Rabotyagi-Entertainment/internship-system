@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using OfficeOpenXml;
 
 namespace Internship_system.BLL.Services;
 
@@ -29,7 +30,30 @@ public class AuthService {
         _configuration = configuration;
     }
 
-    public async Task<string> RegisterAsync(AccountRegisterDto accountRegisterDto, HttpContext httpContext) {
+    public async Task LoadStudents(IFormFile file) {
+        
+        using var stream = new MemoryStream();
+        await file.CopyToAsync(stream);
+        using var package = new ExcelPackage(stream);
+        var worksheet = package.Workbook.Worksheets[0];
+        var students = new List<StudentInfo>();
+        for (var row = 2; row <= worksheet.Dimension.Rows; row++) {
+            var isNumber = int.TryParse(worksheet.Cells[row, 2].Text, out var courseNumber);
+            var student = new StudentInfo {
+                FullName = worksheet.Cells[row, 1].Text ?? "ERROR",
+                CourseNumber = isNumber ? courseNumber : null,
+                Group = worksheet.Cells[row, 3].Text ?? "ERROR",
+            };
+            students.Add(student);
+        }
+
+        if (students.Count > 0) {
+            _interDbContext.StudentInfos.AddRange(students);
+            await _interDbContext.SaveChangesAsync();
+        }
+    }
+
+    public async Task<string> RegisterAsync(AccountRegisterDto accountRegisterDto) {
         if (accountRegisterDto.Email == null) {
             throw new ArgumentNullException(nameof(accountRegisterDto), "Email is empty");
         }
@@ -42,25 +66,50 @@ public class AuthService {
             throw new ConflictException("User with this email already exists");
         }
 
-        var user = new User {
+        var studentInfo = await _interDbContext.StudentInfos
+            .FirstOrDefaultAsync(si => si.FullName == accountRegisterDto.FullName);
+        if (studentInfo == null)
+            throw new NotFoundException("There is no students with this fullName");
+        if (studentInfo.AttachedAt.HasValue)
+            throw new ForbiddenException("Student with this full name already registered");
+        
+        var user = new Student() {
             Email = accountRegisterDto.Email,
             UserName = accountRegisterDto.Email,
             FullName = accountRegisterDto.FullName,
+            CourseNumber = studentInfo.CourseNumber,
+            Group = studentInfo.Group
         };
 
         var result = await _userManager.CreateAsync(user, accountRegisterDto.Password);
 
         if (result.Succeeded) {
             _logger.LogInformation("Successful register");
-
+            
+            studentInfo.AttachedAt = DateTime.UtcNow;
+            _interDbContext.Update(studentInfo);
+            await _interDbContext.SaveChangesAsync();
+            
             return await LoginAsync(new AccountLoginDto()
-                { Email = accountRegisterDto.Email, Password = accountRegisterDto.Password }, httpContext);
+                { Email = accountRegisterDto.Email, Password = accountRegisterDto.Password });
         }
 
         var errors = string.Join(", ", result.Errors.Select(x => x.Description));
         throw new BadRequestException(errors);
     }
-    public async Task<string> LoginAsync(AccountLoginDto accountLoginDto, HttpContext httpContext) {
+
+    public async Task<List<LoadedStudentDto>> GetLoadedStudents() {
+        var students = await _interDbContext.StudentInfos
+            .Take(100)
+            .ToListAsync();
+        return students.Select(s => new LoadedStudentDto {
+            Id = s.Id,
+            FullName = s.FullName,
+            Group = s.Group,
+            CourseNumber = s.CourseNumber
+        }).ToList();
+    }
+    public async Task<string> LoginAsync(AccountLoginDto accountLoginDto) {
         var identity = await GetIdentity(accountLoginDto.Email.ToLower(), accountLoginDto.Password);
         if (identity == null) {
             throw new BadRequestException("Incorrect username or password");

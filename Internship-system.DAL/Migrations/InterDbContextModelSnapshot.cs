@@ -28,7 +28,10 @@ namespace Internship_system.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("PracticeDiaryId")
+                    b.Property<Guid?>("InternshipProgressId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("PracticeDiaryId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("RoleType")
@@ -42,6 +45,8 @@ namespace Internship_system.DAL.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("InternshipProgressId");
 
                     b.HasIndex("PracticeDiaryId");
 
@@ -79,6 +84,9 @@ namespace Internship_system.DAL.Migrations
 
                     b.Property<DateTime?>("EndedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("OrderNumber")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("StartedAt")
                         .HasColumnType("timestamp with time zone");
@@ -137,14 +145,17 @@ namespace Internship_system.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("CourseWorkName")
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CuratorFullName")
                         .HasColumnType("text");
+
+                    b.Property<int>("DiaryType")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("EditedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<byte[]>("File")
                         .HasColumnType("bytea");
@@ -155,10 +166,13 @@ namespace Internship_system.DAL.Migrations
                     b.Property<string>("PlanTable")
                         .HasColumnType("text");
 
-                    b.Property<string>("StudentFullName")
+                    b.Property<string>("StudentCharacteristics")
                         .HasColumnType("text");
 
                     b.Property<string>("TaskReportTable")
+                        .HasColumnType("text");
+
+                    b.Property<string>("WorkName")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -196,6 +210,33 @@ namespace Internship_system.DAL.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Internship_system.DAL.Data.Entities.StudentInfo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("AttachedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("CourseNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Group")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StudentInfos");
                 });
 
             modelBuilder.Entity("Internship_system.DAL.Data.Entities.User", b =>
@@ -404,17 +445,21 @@ namespace Internship_system.DAL.Migrations
 
             modelBuilder.Entity("Internship_system.DAL.Data.Entities.Comment", b =>
                 {
+                    b.HasOne("Internship_system.DAL.Data.Entities.InternshipProgress", "InternshipProgress")
+                        .WithMany("Comments")
+                        .HasForeignKey("InternshipProgressId");
+
                     b.HasOne("Internship_system.DAL.Data.Entities.PracticeDiary", "PracticeDiary")
                         .WithMany()
-                        .HasForeignKey("PracticeDiaryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PracticeDiaryId");
 
                     b.HasOne("Internship_system.DAL.Data.Entities.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("InternshipProgress");
 
                     b.Navigation("PracticeDiary");
 
@@ -528,6 +573,11 @@ namespace Internship_system.DAL.Migrations
             modelBuilder.Entity("Internship_system.DAL.Data.Entities.Internship", b =>
                 {
                     b.Navigation("PracticeDiaries");
+                });
+
+            modelBuilder.Entity("Internship_system.DAL.Data.Entities.InternshipProgress", b =>
+                {
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("Internship_system.DAL.Data.Entities.Role", b =>

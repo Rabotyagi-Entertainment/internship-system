@@ -1,4 +1,4 @@
-namespace Internship_system.DAL.Data.Entities.Enums;
+namespace internship_system.Common.Enums;
 
 public enum DiaryState {
     Draft, // Заполняет шаблон

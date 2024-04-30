@@ -1,4 +1,4 @@
-using Internship_system.DAL.Data.Entities.Enums;
+using internship_system.Common.Enums;
 
 namespace Internship_system.DAL.Data.Entities;
 
@@ -11,5 +11,5 @@ public class InternshipProgress {
     public string? AdditionalInfo { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? EditedAt { get; set; }
-    
+    public List<Comment> Comments { get; set; } = new();
 }

@@ -1,0 +1,714 @@
+[2024-04-21 00:07:48 +07:00 INF] Request starting HTTP/1.1 POST http://localhost:5105/admin/internship/students - application/json 234 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:07:48 +07:00 WRN] Failed to determine the https port for redirect. <s:Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware>
+[2024-04-21 00:07:48 +07:00 INF] CORS policy execution successful. <s:Microsoft.AspNetCore.Cors.Infrastructure.CorsService>
+[2024-04-21 00:07:48 +07:00 INF] Executing endpoint 'Internship_system.Controllers.InternshipAdminController.UploadStudents (Internship-system.API)' <s:Microsoft.AspNetCore.Routing.EndpointMiddleware>
+[2024-04-21 00:07:48 +07:00 INF] Route matched with {action = "UploadStudents", controller = "InternshipAdmin"}. Executing controller action with signature System.Threading.Tasks.Task UploadStudents(System.Collections.Generic.List`1[Internship_system.BLL.DTOs.InternshipAdmin.UploadStudentDto]) on controller Internship_system.Controllers.InternshipAdminController (Internship-system.API). <s:Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker>
+[2024-04-21 00:07:48 +07:00 INF] Executed DbCommand (4ms) [Parameters=[@__normalizedUserName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Discriminator", a."Email", a."EmailConfirmed", a."FullName", a."JoinedAt", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName", a."CourseNumber", a."Group"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:07:48 +07:00 INF] Executed DbCommand (11ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Int32), @p2='?', @p3='?' (DbType = Int32), @p4='?', @p5='?', @p6='?' (DbType = Boolean), @p7='?', @p8='?', @p9='?' (DbType = DateTime), @p10='?' (DbType = Boolean), @p11='?' (DbType = DateTime), @p12='?', @p13='?', @p14='?', @p15='?', @p16='?' (DbType = Boolean), @p17='?', @p18='?' (DbType = Boolean), @p19='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AspNetUsers" ("Id", "AccessFailedCount", "ConcurrencyStamp", "CourseNumber", "Discriminator", "Email", "EmailConfirmed", "FullName", "Group", "JoinedAt", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19); <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:07:49 +07:00 INF] Executed DbCommand (2ms) [Parameters=[@__normalizedRoleName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName", a."RoleType"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedRoleName_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:07:49 +07:00 INF] Executed DbCommand (2ms) [Parameters=[@__get_Item_0='?' (DbType = Guid), @__get_Item_1='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."UserId", a."RoleId"
+FROM "AspNetUserRoles" AS a
+WHERE a."UserId" = @__get_Item_0 AND a."RoleId" = @__get_Item_1
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:07:49 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedRoleName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName", a."RoleType"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedRoleName_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:07:49 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Discriminator", a."Email", a."EmailConfirmed", a."FullName", a."JoinedAt", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName", a."CourseNumber", a."Group"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:07:49 +07:00 INF] Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Guid), @p20='?' (DbType = Guid), @p2='?' (DbType = Int32), @p3='?', @p21='?', @p4='?' (DbType = Int32), @p5='?', @p6='?' (DbType = Boolean), @p7='?', @p8='?', @p9='?' (DbType = DateTime), @p10='?' (DbType = Boolean), @p11='?' (DbType = DateTime), @p12='?', @p13='?', @p14='?', @p15='?', @p16='?' (DbType = Boolean), @p17='?', @p18='?' (DbType = Boolean), @p19='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AspNetUserRoles" ("RoleId", "UserId")
+VALUES (@p0, @p1);
+UPDATE "AspNetUsers" SET "AccessFailedCount" = @p2, "ConcurrencyStamp" = @p3, "CourseNumber" = @p4, "Email" = @p5, "EmailConfirmed" = @p6, "FullName" = @p7, "Group" = @p8, "JoinedAt" = @p9, "LockoutEnabled" = @p10, "LockoutEnd" = @p11, "NormalizedEmail" = @p12, "NormalizedUserName" = @p13, "PasswordHash" = @p14, "PhoneNumber" = @p15, "PhoneNumberConfirmed" = @p16, "SecurityStamp" = @p17, "TwoFactorEnabled" = @p18, "UserName" = @p19
+WHERE "Id" = @p20 AND "ConcurrencyStamp" = @p21; <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:07:49 +07:00 INF] Executed DbCommand (2ms) [Parameters=[@__normalizedUserName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Discriminator", a."Email", a."EmailConfirmed", a."FullName", a."JoinedAt", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName", a."CourseNumber", a."Group"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:07:49 +07:00 INF] Executed action Internship_system.Controllers.InternshipAdminController.UploadStudents (Internship-system.API) in 958.4104ms <s:Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker>
+[2024-04-21 00:07:49 +07:00 INF] Executed endpoint 'Internship_system.Controllers.InternshipAdminController.UploadStudents (Internship-system.API)' <s:Microsoft.AspNetCore.Routing.EndpointMiddleware>
+[2024-04-21 00:07:49 +07:00 ERR] {"StatusCode":500,"Message":"Something went wrong","TraceId":"00-97e2d772c105cac9df442266e37739d0-03713c047a02211f-00"} <s:Internship_system.BLL.Exceptions.ExceptionHandlerMiddleware>
+System.InvalidOperationException: Unable to create administrator user
+   at Internship_system.BLL.Services.InternshipAdminService.UploadStudents(List`1 students) in D:\prog\a_projects\back\Internship\Internship-system.BLL\Services\InternshipAdminService.cs:line 49
+   at Internship_system.Controllers.InternshipAdminController.UploadStudents(List`1 students) in D:\prog\a_projects\back\Internship\Internship-system.API\Controllers\InternshipAdminController.cs:line 40
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Internship_system.BLL.Exceptions.ExceptionHandlerMiddleware.InvokeAsync(HttpContext context) in D:\prog\a_projects\back\Internship\Internship-system.BLL\Exceptions\ExceptionHandlerMiddleware.cs:line 27
+[2024-04-21 00:07:49 +07:00 INF] Request finished HTTP/1.1 POST http://localhost:5105/admin/internship/students - 500 null application/json 1157.3358ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:09:02 +07:00 INF] Executed DbCommand (83ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+) <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:02 +07:00 INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId"; <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:02 +07:00 INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+) <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:02 +07:00 INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+) <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:02 +07:00 INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId"; <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:02 +07:00 INF] No migrations were applied. The database is already up to date. <s:Microsoft.EntityFrameworkCore.Migrations>
+[2024-04-21 00:09:02 +07:00 INF] User profile is available. Using 'C:\Users\danka\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest. <s:Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager>
+[2024-04-21 00:09:02 +07:00 INF] Executed DbCommand (12ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName", a."RoleType"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:02 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName", a."RoleType"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:02 +07:00 INF] Executed DbCommand (3ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Discriminator", a."Email", a."EmailConfirmed", a."FullName", a."JoinedAt", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName", a."CourseNumber", a."Group"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:02 +07:00 INF] Executed DbCommand (2ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Discriminator", a."Email", a."EmailConfirmed", a."FullName", a."JoinedAt", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName", a."CourseNumber", a."Group"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:02 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedRoleName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName", a."RoleType"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedRoleName_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:02 +07:00 INF] Executed DbCommand (4ms) [Parameters=[@__get_Item_0='?' (DbType = Guid), @__get_Item_1='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."UserId", a."RoleId"
+FROM "AspNetUserRoles" AS a
+WHERE a."UserId" = @__get_Item_0 AND a."RoleId" = @__get_Item_1
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:03 +07:00 INF] Now listening on: http://localhost:5105 <s:Microsoft.Hosting.Lifetime>
+[2024-04-21 00:09:03 +07:00 INF] Application started. Press Ctrl+C to shut down. <s:Microsoft.Hosting.Lifetime>
+[2024-04-21 00:09:03 +07:00 INF] Hosting environment: Development <s:Microsoft.Hosting.Lifetime>
+[2024-04-21 00:09:03 +07:00 INF] Content root path: D:\prog\a_projects\back\Internship\Internship-system.API <s:Microsoft.Hosting.Lifetime>
+[2024-04-21 00:09:03 +07:00 INF] Request starting HTTP/1.1 GET http://localhost:5105/swagger/index.html - null null <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:09:03 +07:00 INF] Request finished HTTP/1.1 GET http://localhost:5105/swagger/index.html - 200 null text/html;charset=utf-8 174.9189ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:09:03 +07:00 INF] Request starting HTTP/1.1 GET http://localhost:5105/swagger/v1/swagger.json - null null <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:09:03 +07:00 INF] Request finished HTTP/1.1 GET http://localhost:5105/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 196.1451ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:09:06 +07:00 INF] Request starting HTTP/1.1 POST http://localhost:5105/admin/internship/students - application/json 234 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:09:06 +07:00 WRN] Failed to determine the https port for redirect. <s:Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware>
+[2024-04-21 00:09:06 +07:00 INF] CORS policy execution successful. <s:Microsoft.AspNetCore.Cors.Infrastructure.CorsService>
+[2024-04-21 00:09:06 +07:00 INF] Executing endpoint 'Internship_system.Controllers.InternshipAdminController.UploadStudents (Internship-system.API)' <s:Microsoft.AspNetCore.Routing.EndpointMiddleware>
+[2024-04-21 00:09:06 +07:00 INF] Route matched with {action = "UploadStudents", controller = "InternshipAdmin"}. Executing controller action with signature System.Threading.Tasks.Task UploadStudents(System.Collections.Generic.List`1[Internship_system.BLL.DTOs.InternshipAdmin.UploadStudentDto]) on controller Internship_system.Controllers.InternshipAdminController (Internship-system.API). <s:Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker>
+[2024-04-21 00:09:06 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Discriminator", a."Email", a."EmailConfirmed", a."FullName", a."JoinedAt", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName", a."CourseNumber", a."Group"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:06 +07:00 INF] Executed DbCommand (7ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Int32), @p2='?', @p3='?' (DbType = Int32), @p4='?', @p5='?', @p6='?' (DbType = Boolean), @p7='?', @p8='?', @p9='?' (DbType = DateTime), @p10='?' (DbType = Boolean), @p11='?' (DbType = DateTime), @p12='?', @p13='?', @p14='?', @p15='?', @p16='?' (DbType = Boolean), @p17='?', @p18='?' (DbType = Boolean), @p19='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AspNetUsers" ("Id", "AccessFailedCount", "ConcurrencyStamp", "CourseNumber", "Discriminator", "Email", "EmailConfirmed", "FullName", "Group", "JoinedAt", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19); <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:06 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedRoleName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName", a."RoleType"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedRoleName_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:06 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__get_Item_0='?' (DbType = Guid), @__get_Item_1='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."UserId", a."RoleId"
+FROM "AspNetUserRoles" AS a
+WHERE a."UserId" = @__get_Item_0 AND a."RoleId" = @__get_Item_1
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:06 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedRoleName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName", a."RoleType"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedRoleName_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:06 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Discriminator", a."Email", a."EmailConfirmed", a."FullName", a."JoinedAt", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName", a."CourseNumber", a."Group"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:06 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Guid), @p20='?' (DbType = Guid), @p2='?' (DbType = Int32), @p3='?', @p21='?', @p4='?' (DbType = Int32), @p5='?', @p6='?' (DbType = Boolean), @p7='?', @p8='?', @p9='?' (DbType = DateTime), @p10='?' (DbType = Boolean), @p11='?' (DbType = DateTime), @p12='?', @p13='?', @p14='?', @p15='?', @p16='?' (DbType = Boolean), @p17='?', @p18='?' (DbType = Boolean), @p19='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AspNetUserRoles" ("RoleId", "UserId")
+VALUES (@p0, @p1);
+UPDATE "AspNetUsers" SET "AccessFailedCount" = @p2, "ConcurrencyStamp" = @p3, "CourseNumber" = @p4, "Email" = @p5, "EmailConfirmed" = @p6, "FullName" = @p7, "Group" = @p8, "JoinedAt" = @p9, "LockoutEnabled" = @p10, "LockoutEnd" = @p11, "NormalizedEmail" = @p12, "NormalizedUserName" = @p13, "PasswordHash" = @p14, "PhoneNumber" = @p15, "PhoneNumberConfirmed" = @p16, "SecurityStamp" = @p17, "TwoFactorEnabled" = @p18, "UserName" = @p19
+WHERE "Id" = @p20 AND "ConcurrencyStamp" = @p21; <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:06 +07:00 INF] Executed DbCommand (2ms) [Parameters=[@__normalizedUserName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Discriminator", a."Email", a."EmailConfirmed", a."FullName", a."JoinedAt", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName", a."CourseNumber", a."Group"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:06 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Int32), @p2='?', @p3='?' (DbType = Int32), @p4='?', @p5='?', @p6='?' (DbType = Boolean), @p7='?', @p8='?', @p9='?' (DbType = DateTime), @p10='?' (DbType = Boolean), @p11='?' (DbType = DateTime), @p12='?', @p13='?', @p14='?', @p15='?', @p16='?' (DbType = Boolean), @p17='?', @p18='?' (DbType = Boolean), @p19='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AspNetUsers" ("Id", "AccessFailedCount", "ConcurrencyStamp", "CourseNumber", "Discriminator", "Email", "EmailConfirmed", "FullName", "Group", "JoinedAt", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19); <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:06 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedRoleName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName", a."RoleType"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedRoleName_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:06 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__get_Item_0='?' (DbType = Guid), @__get_Item_1='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."UserId", a."RoleId"
+FROM "AspNetUserRoles" AS a
+WHERE a."UserId" = @__get_Item_0 AND a."RoleId" = @__get_Item_1
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:06 +07:00 INF] Executed DbCommand (0ms) [Parameters=[@__normalizedRoleName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName", a."RoleType"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedRoleName_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:06 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Discriminator", a."Email", a."EmailConfirmed", a."FullName", a."JoinedAt", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName", a."CourseNumber", a."Group"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:06 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Guid), @p20='?' (DbType = Guid), @p2='?' (DbType = Int32), @p3='?', @p21='?', @p4='?' (DbType = Int32), @p5='?', @p6='?' (DbType = Boolean), @p7='?', @p8='?', @p9='?' (DbType = DateTime), @p10='?' (DbType = Boolean), @p11='?' (DbType = DateTime), @p12='?', @p13='?', @p14='?', @p15='?', @p16='?' (DbType = Boolean), @p17='?', @p18='?' (DbType = Boolean), @p19='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AspNetUserRoles" ("RoleId", "UserId")
+VALUES (@p0, @p1);
+UPDATE "AspNetUsers" SET "AccessFailedCount" = @p2, "ConcurrencyStamp" = @p3, "CourseNumber" = @p4, "Email" = @p5, "EmailConfirmed" = @p6, "FullName" = @p7, "Group" = @p8, "JoinedAt" = @p9, "LockoutEnabled" = @p10, "LockoutEnd" = @p11, "NormalizedEmail" = @p12, "NormalizedUserName" = @p13, "PasswordHash" = @p14, "PhoneNumber" = @p15, "PhoneNumberConfirmed" = @p16, "SecurityStamp" = @p17, "TwoFactorEnabled" = @p18, "UserName" = @p19
+WHERE "Id" = @p20 AND "ConcurrencyStamp" = @p21; <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:06 +07:00 INF] Executed action Internship_system.Controllers.InternshipAdminController.UploadStudents (Internship-system.API) in 585.6913ms <s:Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker>
+[2024-04-21 00:09:06 +07:00 INF] Executed endpoint 'Internship_system.Controllers.InternshipAdminController.UploadStudents (Internship-system.API)' <s:Microsoft.AspNetCore.Routing.EndpointMiddleware>
+[2024-04-21 00:09:06 +07:00 INF] Request finished HTTP/1.1 POST http://localhost:5105/admin/internship/students - 200 0 null 653.1691ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:09:22 +07:00 INF] Request starting HTTP/1.1 POST http://localhost:5105/api/auth/login - application/json 64 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:09:22 +07:00 INF] CORS policy execution successful. <s:Microsoft.AspNetCore.Cors.Infrastructure.CorsService>
+[2024-04-21 00:09:22 +07:00 INF] Executing endpoint 'Internship_system.Controllers.AuthController.Login (Internship-system.API)' <s:Microsoft.AspNetCore.Routing.EndpointMiddleware>
+[2024-04-21 00:09:22 +07:00 INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.String]] Login(Internship_system.BLL.DTOs.AccountLoginDto) on controller Internship_system.Controllers.AuthController (Internship-system.API). <s:Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker>
+[2024-04-21 00:09:23 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Discriminator", a."Email", a."EmailConfirmed", a."FullName", a."JoinedAt", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName", a."CourseNumber", a."Group"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:23 +07:00 INF] Executed action Internship_system.Controllers.AuthController.Login (Internship-system.API) in 330.8032ms <s:Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker>
+[2024-04-21 00:09:23 +07:00 INF] Executed endpoint 'Internship_system.Controllers.AuthController.Login (Internship-system.API)' <s:Microsoft.AspNetCore.Routing.EndpointMiddleware>
+[2024-04-21 00:09:23 +07:00 ERR] {"StatusCode":400,"Message":"Incorrect username or password","TraceId":"00-4a96363a00e1b97f2b5d2a99231b11f8-52894a99b541b92f-00"} <s:Internship_system.BLL.Exceptions.ExceptionHandlerMiddleware>
+Internship_system.BLL.Exceptions.BadRequestException: Incorrect username or password
+   at Internship_system.BLL.Services.AuthService.LoginAsync(AccountLoginDto accountLoginDto, HttpContext httpContext) in D:\prog\a_projects\back\Internship\Internship-system.BLL\Services\AuthService.cs:line 66
+   at Internship_system.Controllers.AuthController.Login(AccountLoginDto accountLoginDto) in D:\prog\a_projects\back\Internship\Internship-system.API\Controllers\AuthController.cs:line 33
+   at lambda_method386(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Internship_system.BLL.Exceptions.ExceptionHandlerMiddleware.InvokeAsync(HttpContext context) in D:\prog\a_projects\back\Internship\Internship-system.BLL\Exceptions\ExceptionHandlerMiddleware.cs:line 27
+[2024-04-21 00:09:23 +07:00 INF] Request finished HTTP/1.1 POST http://localhost:5105/api/auth/login - 400 null application/json 566.0484ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:09:30 +07:00 INF] Request starting HTTP/1.1 POST http://localhost:5105/api/auth/login - application/json 62 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:09:30 +07:00 INF] CORS policy execution successful. <s:Microsoft.AspNetCore.Cors.Infrastructure.CorsService>
+[2024-04-21 00:09:30 +07:00 INF] Executing endpoint 'Internship_system.Controllers.AuthController.Login (Internship-system.API)' <s:Microsoft.AspNetCore.Routing.EndpointMiddleware>
+[2024-04-21 00:09:30 +07:00 INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.String]] Login(Internship_system.BLL.DTOs.AccountLoginDto) on controller Internship_system.Controllers.AuthController (Internship-system.API). <s:Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker>
+[2024-04-21 00:09:30 +07:00 INF] Executed DbCommand (2ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Discriminator", a."Email", a."EmailConfirmed", a."FullName", a."JoinedAt", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName", a."CourseNumber", a."Group"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:30 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."Name"
+FROM "AspNetUserRoles" AS a
+INNER JOIN "AspNetRoles" AS a0 ON a."RoleId" = a0."Id"
+WHERE a."UserId" = @__userId_0 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:09:30 +07:00 INF] Successful login <s:Internship_system.BLL.Services.AuthService>
+[2024-04-21 00:09:30 +07:00 INF] Executing OkObjectResult, writing value of type 'System.String'. <s:Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor>
+[2024-04-21 00:09:30 +07:00 INF] Executed action Internship_system.Controllers.AuthController.Login (Internship-system.API) in 510.9007ms <s:Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker>
+[2024-04-21 00:09:30 +07:00 INF] Executed endpoint 'Internship_system.Controllers.AuthController.Login (Internship-system.API)' <s:Microsoft.AspNetCore.Routing.EndpointMiddleware>
+[2024-04-21 00:09:30 +07:00 INF] Request finished HTTP/1.1 POST http://localhost:5105/api/auth/login - 200 null text/plain; charset=utf-8 515.8928ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:10:46 +07:00 INF] Request starting HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - application/json 5 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:10:46 +07:00 INF] CORS policy execution successful. <s:Microsoft.AspNetCore.Cors.Infrastructure.CorsService>
+[2024-04-21 00:10:46 +07:00 INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user. <s:Microsoft.AspNetCore.Authorization.DefaultAuthorizationService>
+[2024-04-21 00:10:46 +07:00 INF] AuthenticationScheme: Identity.Application was challenged. <s:Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationHandler>
+[2024-04-21 00:10:46 +07:00 INF] Request finished HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - 302 0 null 25.8358ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:10:46 +07:00 INF] Request starting HTTP/1.1 GET http://localhost:5105/Account/Login?ReturnUrl=%2Fadmin%2Finternship%2F01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - null null <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:10:46 +07:00 INF] Request finished HTTP/1.1 GET http://localhost:5105/Account/Login?ReturnUrl=%2Fadmin%2Finternship%2F01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - 404 0 null 0.9688ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:10:46 +07:00 INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5105/Account/Login, Response status code: 404 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:11:09 +07:00 INF] Request starting HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - application/json 5 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:11:09 +07:00 INF] CORS policy execution successful. <s:Microsoft.AspNetCore.Cors.Infrastructure.CorsService>
+[2024-04-21 00:11:09 +07:00 INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user. <s:Microsoft.AspNetCore.Authorization.DefaultAuthorizationService>
+[2024-04-21 00:11:09 +07:00 INF] AuthenticationScheme: Identity.Application was challenged. <s:Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationHandler>
+[2024-04-21 00:11:09 +07:00 INF] Request finished HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - 302 0 null 11.6848ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:11:09 +07:00 INF] Request starting HTTP/1.1 GET http://localhost:5105/Account/Login?ReturnUrl=%2Fadmin%2Finternship%2F01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - null null <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:11:09 +07:00 INF] Request finished HTTP/1.1 GET http://localhost:5105/Account/Login?ReturnUrl=%2Fadmin%2Finternship%2F01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - 404 0 null 4.3529ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:11:09 +07:00 INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5105/Account/Login, Response status code: 404 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:11:27 +07:00 INF] Request starting HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - application/json 5 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:11:27 +07:00 INF] CORS policy execution successful. <s:Microsoft.AspNetCore.Cors.Infrastructure.CorsService>
+[2024-04-21 00:11:27 +07:00 INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user. <s:Microsoft.AspNetCore.Authorization.DefaultAuthorizationService>
+[2024-04-21 00:11:27 +07:00 INF] AuthenticationScheme: Identity.Application was challenged. <s:Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationHandler>
+[2024-04-21 00:11:27 +07:00 INF] Request finished HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - 302 0 null 9.2266ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:11:27 +07:00 INF] Request starting HTTP/1.1 GET http://localhost:5105/Account/Login?ReturnUrl=%2Fadmin%2Finternship%2F01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - null null <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:11:27 +07:00 INF] Request finished HTTP/1.1 GET http://localhost:5105/Account/Login?ReturnUrl=%2Fadmin%2Finternship%2F01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - 404 0 null 1.3647ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:11:27 +07:00 INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5105/Account/Login, Response status code: 404 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:11:57 +07:00 INF] Request starting HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - application/json 5 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:11:57 +07:00 INF] CORS policy execution successful. <s:Microsoft.AspNetCore.Cors.Infrastructure.CorsService>
+[2024-04-21 00:11:57 +07:00 INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user. <s:Microsoft.AspNetCore.Authorization.DefaultAuthorizationService>
+[2024-04-21 00:11:57 +07:00 INF] AuthenticationScheme: Identity.Application was challenged. <s:Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationHandler>
+[2024-04-21 00:11:57 +07:00 INF] Request finished HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - 302 0 null 20.2722ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:11:57 +07:00 INF] Request starting HTTP/1.1 GET http://localhost:5105/Account/Login?ReturnUrl=%2Fadmin%2Finternship%2F01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - null null <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:11:57 +07:00 INF] Request finished HTTP/1.1 GET http://localhost:5105/Account/Login?ReturnUrl=%2Fadmin%2Finternship%2F01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - 404 0 null 0.7829ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:11:57 +07:00 INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5105/Account/Login, Response status code: 404 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:30 +07:00 INF] Request starting HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - application/json 5 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:30 +07:00 INF] CORS policy execution successful. <s:Microsoft.AspNetCore.Cors.Infrastructure.CorsService>
+[2024-04-21 00:12:30 +07:00 INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user. <s:Microsoft.AspNetCore.Authorization.DefaultAuthorizationService>
+[2024-04-21 00:12:30 +07:00 INF] AuthenticationScheme: Identity.Application was challenged. <s:Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationHandler>
+[2024-04-21 00:12:30 +07:00 INF] Request finished HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - 302 0 null 8.5586ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:30 +07:00 INF] Request starting HTTP/1.1 GET http://localhost:5105/Account/Login?ReturnUrl=%2Fadmin%2Finternship%2F01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - null null <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:30 +07:00 INF] Request finished HTTP/1.1 GET http://localhost:5105/Account/Login?ReturnUrl=%2Fadmin%2Finternship%2F01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - 404 0 null 2.9365ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:30 +07:00 INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5105/Account/Login, Response status code: 404 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:31 +07:00 INF] Request starting HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - application/json 5 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:31 +07:00 INF] CORS policy execution successful. <s:Microsoft.AspNetCore.Cors.Infrastructure.CorsService>
+[2024-04-21 00:12:31 +07:00 INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user. <s:Microsoft.AspNetCore.Authorization.DefaultAuthorizationService>
+[2024-04-21 00:12:31 +07:00 INF] AuthenticationScheme: Identity.Application was challenged. <s:Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationHandler>
+[2024-04-21 00:12:31 +07:00 INF] Request finished HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - 302 0 null 8.8029ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:31 +07:00 INF] Request starting HTTP/1.1 GET http://localhost:5105/Account/Login?ReturnUrl=%2Fadmin%2Finternship%2F01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - null null <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:31 +07:00 INF] Request finished HTTP/1.1 GET http://localhost:5105/Account/Login?ReturnUrl=%2Fadmin%2Finternship%2F01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - 404 0 null 1.9154ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:31 +07:00 INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5105/Account/Login, Response status code: 404 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:32 +07:00 INF] Request starting HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - application/json 5 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:32 +07:00 INF] CORS policy execution successful. <s:Microsoft.AspNetCore.Cors.Infrastructure.CorsService>
+[2024-04-21 00:12:32 +07:00 INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user. <s:Microsoft.AspNetCore.Authorization.DefaultAuthorizationService>
+[2024-04-21 00:12:32 +07:00 INF] AuthenticationScheme: Identity.Application was challenged. <s:Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationHandler>
+[2024-04-21 00:12:32 +07:00 INF] Request finished HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - 302 0 null 2.4579ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:32 +07:00 INF] Request starting HTTP/1.1 GET http://localhost:5105/Account/Login?ReturnUrl=%2Fadmin%2Finternship%2F01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - null null <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:32 +07:00 INF] Request finished HTTP/1.1 GET http://localhost:5105/Account/Login?ReturnUrl=%2Fadmin%2Finternship%2F01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - 404 0 null 0.6537ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:32 +07:00 INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5105/Account/Login, Response status code: 404 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:33 +07:00 INF] Request starting HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - application/json 5 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:33 +07:00 INF] CORS policy execution successful. <s:Microsoft.AspNetCore.Cors.Infrastructure.CorsService>
+[2024-04-21 00:12:33 +07:00 INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user. <s:Microsoft.AspNetCore.Authorization.DefaultAuthorizationService>
+[2024-04-21 00:12:33 +07:00 INF] AuthenticationScheme: Identity.Application was challenged. <s:Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationHandler>
+[2024-04-21 00:12:33 +07:00 INF] Request finished HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - 302 0 null 9.4999ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:33 +07:00 INF] Request starting HTTP/1.1 GET http://localhost:5105/Account/Login?ReturnUrl=%2Fadmin%2Finternship%2F01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - null null <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:33 +07:00 INF] Request finished HTTP/1.1 GET http://localhost:5105/Account/Login?ReturnUrl=%2Fadmin%2Finternship%2F01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - 404 0 null 0.8264ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:33 +07:00 INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5105/Account/Login, Response status code: 404 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:34 +07:00 INF] Request starting HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - application/json 5 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:34 +07:00 INF] CORS policy execution successful. <s:Microsoft.AspNetCore.Cors.Infrastructure.CorsService>
+[2024-04-21 00:12:34 +07:00 INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user. <s:Microsoft.AspNetCore.Authorization.DefaultAuthorizationService>
+[2024-04-21 00:12:34 +07:00 INF] AuthenticationScheme: Identity.Application was challenged. <s:Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationHandler>
+[2024-04-21 00:12:34 +07:00 INF] Request finished HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - 302 0 null 7.6317ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:34 +07:00 INF] Request starting HTTP/1.1 GET http://localhost:5105/Account/Login?ReturnUrl=%2Fadmin%2Finternship%2F01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - null null <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:34 +07:00 INF] Request finished HTTP/1.1 GET http://localhost:5105/Account/Login?ReturnUrl=%2Fadmin%2Finternship%2F01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - 404 0 null 0.5664ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:12:34 +07:00 INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5105/Account/Login, Response status code: 404 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:13:13 +07:00 INF] Executed DbCommand (96ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+) <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:13:13 +07:00 INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId"; <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:13:13 +07:00 INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+) <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:13:13 +07:00 INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+) <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:13:13 +07:00 INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId"; <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:13:13 +07:00 INF] No migrations were applied. The database is already up to date. <s:Microsoft.EntityFrameworkCore.Migrations>
+[2024-04-21 00:13:13 +07:00 INF] User profile is available. Using 'C:\Users\danka\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest. <s:Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager>
+[2024-04-21 00:13:14 +07:00 INF] Executed DbCommand (14ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName", a."RoleType"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:13:14 +07:00 INF] Executed DbCommand (2ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName", a."RoleType"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:13:14 +07:00 INF] Executed DbCommand (3ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Discriminator", a."Email", a."EmailConfirmed", a."FullName", a."JoinedAt", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName", a."CourseNumber", a."Group"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:13:14 +07:00 INF] Executed DbCommand (2ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Discriminator", a."Email", a."EmailConfirmed", a."FullName", a."JoinedAt", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName", a."CourseNumber", a."Group"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:13:14 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedRoleName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName", a."RoleType"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedRoleName_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:13:14 +07:00 INF] Executed DbCommand (4ms) [Parameters=[@__get_Item_0='?' (DbType = Guid), @__get_Item_1='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."UserId", a."RoleId"
+FROM "AspNetUserRoles" AS a
+WHERE a."UserId" = @__get_Item_0 AND a."RoleId" = @__get_Item_1
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:13:14 +07:00 INF] Now listening on: http://localhost:5105 <s:Microsoft.Hosting.Lifetime>
+[2024-04-21 00:13:14 +07:00 INF] Application started. Press Ctrl+C to shut down. <s:Microsoft.Hosting.Lifetime>
+[2024-04-21 00:13:14 +07:00 INF] Hosting environment: Development <s:Microsoft.Hosting.Lifetime>
+[2024-04-21 00:13:14 +07:00 INF] Content root path: D:\prog\a_projects\back\Internship\Internship-system.API <s:Microsoft.Hosting.Lifetime>
+[2024-04-21 00:13:15 +07:00 INF] Request starting HTTP/1.1 GET http://localhost:5105/swagger/index.html - null null <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:13:15 +07:00 INF] Request finished HTTP/1.1 GET http://localhost:5105/swagger/index.html - 200 null text/html;charset=utf-8 173.6475ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:13:15 +07:00 INF] Request starting HTTP/1.1 GET http://localhost:5105/swagger/v1/swagger.json - null null <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:13:15 +07:00 INF] Request finished HTTP/1.1 GET http://localhost:5105/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 195.7456ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:13:24 +07:00 INF] Request starting HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - application/json 5 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:13:24 +07:00 WRN] Failed to determine the https port for redirect. <s:Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware>
+[2024-04-21 00:13:24 +07:00 INF] CORS policy execution successful. <s:Microsoft.AspNetCore.Cors.Infrastructure.CorsService>
+[2024-04-21 00:13:24 +07:00 INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user. <s:Microsoft.AspNetCore.Authorization.DefaultAuthorizationService>
+[2024-04-21 00:13:24 +07:00 INF] AuthenticationScheme: Identity.Application was challenged. <s:Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationHandler>
+[2024-04-21 00:13:24 +07:00 INF] Request finished HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - 302 0 null 32.2254ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:13:24 +07:00 INF] Request starting HTTP/1.1 GET http://localhost:5105/Account/Login?ReturnUrl=%2Fadmin%2Finternship%2F01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - null null <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:13:24 +07:00 INF] Request finished HTTP/1.1 GET http://localhost:5105/Account/Login?ReturnUrl=%2Fadmin%2Finternship%2F01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - 404 0 null 5.9658ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:13:24 +07:00 INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5105/Account/Login, Response status code: 404 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:13:57 +07:00 INF] Executed DbCommand (82ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+) <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:13:58 +07:00 INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId"; <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:13:58 +07:00 INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+) <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:13:58 +07:00 INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+) <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:13:58 +07:00 INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId"; <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:13:58 +07:00 INF] No migrations were applied. The database is already up to date. <s:Microsoft.EntityFrameworkCore.Migrations>
+[2024-04-21 00:13:58 +07:00 INF] User profile is available. Using 'C:\Users\danka\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest. <s:Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager>
+[2024-04-21 00:13:58 +07:00 INF] Executed DbCommand (13ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName", a."RoleType"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:13:58 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName", a."RoleType"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:13:58 +07:00 INF] Executed DbCommand (3ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Discriminator", a."Email", a."EmailConfirmed", a."FullName", a."JoinedAt", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName", a."CourseNumber", a."Group"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:13:58 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Discriminator", a."Email", a."EmailConfirmed", a."FullName", a."JoinedAt", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName", a."CourseNumber", a."Group"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:13:58 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedRoleName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName", a."RoleType"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedRoleName_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:13:58 +07:00 INF] Executed DbCommand (3ms) [Parameters=[@__get_Item_0='?' (DbType = Guid), @__get_Item_1='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."UserId", a."RoleId"
+FROM "AspNetUserRoles" AS a
+WHERE a."UserId" = @__get_Item_0 AND a."RoleId" = @__get_Item_1
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:13:59 +07:00 INF] Now listening on: http://localhost:5105 <s:Microsoft.Hosting.Lifetime>
+[2024-04-21 00:13:59 +07:00 INF] Application started. Press Ctrl+C to shut down. <s:Microsoft.Hosting.Lifetime>
+[2024-04-21 00:13:59 +07:00 INF] Hosting environment: Development <s:Microsoft.Hosting.Lifetime>
+[2024-04-21 00:13:59 +07:00 INF] Content root path: D:\prog\a_projects\back\Internship\Internship-system.API <s:Microsoft.Hosting.Lifetime>
+[2024-04-21 00:13:59 +07:00 INF] Request starting HTTP/1.1 GET http://localhost:5105/swagger/index.html - null null <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:13:59 +07:00 INF] Request finished HTTP/1.1 GET http://localhost:5105/swagger/index.html - 200 null text/html;charset=utf-8 199.4328ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:13:59 +07:00 INF] Request starting HTTP/1.1 GET http://localhost:5105/swagger/v1/swagger.json - null null <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:13:59 +07:00 INF] Request finished HTTP/1.1 GET http://localhost:5105/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 182.684ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:14:15 +07:00 INF] Request starting HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - application/json 5 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:14:15 +07:00 WRN] Failed to determine the https port for redirect. <s:Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware>
+[2024-04-21 00:14:15 +07:00 INF] CORS policy execution successful. <s:Microsoft.AspNetCore.Cors.Infrastructure.CorsService>
+[2024-04-21 00:14:15 +07:00 INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user. <s:Microsoft.AspNetCore.Authorization.DefaultAuthorizationService>
+[2024-04-21 00:14:15 +07:00 INF] AuthenticationScheme: Bearer was challenged. <s:Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler>
+[2024-04-21 00:14:15 +07:00 INF] Request finished HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - 401 0 null 574.999ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:14:26 +07:00 INF] Request starting HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - application/json 5 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:14:26 +07:00 INF] CORS policy execution successful. <s:Microsoft.AspNetCore.Cors.Infrastructure.CorsService>
+[2024-04-21 00:14:27 +07:00 INF] Executing endpoint 'Internship_system.Controllers.InternshipAdminController.CommentStudentInternshipProgress (Internship-system.API)' <s:Microsoft.AspNetCore.Routing.EndpointMiddleware>
+[2024-04-21 00:14:27 +07:00 INF] Route matched with {action = "CommentStudentInternshipProgress", controller = "InternshipAdmin"}. Executing controller action with signature System.Threading.Tasks.Task CommentStudentInternshipProgress(System.String, System.Guid) on controller Internship_system.Controllers.InternshipAdminController (Internship-system.API). <s:Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker>
+[2024-04-21 00:15:24 +07:00 INF] Executed DbCommand (95ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+) <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:15:24 +07:00 INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId"; <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:15:24 +07:00 INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+) <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:15:24 +07:00 INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+) <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:15:24 +07:00 INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId"; <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:15:24 +07:00 INF] No migrations were applied. The database is already up to date. <s:Microsoft.EntityFrameworkCore.Migrations>
+[2024-04-21 00:15:24 +07:00 INF] User profile is available. Using 'C:\Users\danka\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest. <s:Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager>
+[2024-04-21 00:15:24 +07:00 INF] Executed DbCommand (13ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName", a."RoleType"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:15:25 +07:00 INF] Executed DbCommand (2ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName", a."RoleType"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:15:25 +07:00 INF] Executed DbCommand (3ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Discriminator", a."Email", a."EmailConfirmed", a."FullName", a."JoinedAt", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName", a."CourseNumber", a."Group"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:15:25 +07:00 INF] Executed DbCommand (2ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Discriminator", a."Email", a."EmailConfirmed", a."FullName", a."JoinedAt", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName", a."CourseNumber", a."Group"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:15:25 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedRoleName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName", a."RoleType"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedRoleName_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:15:25 +07:00 INF] Executed DbCommand (4ms) [Parameters=[@__get_Item_0='?' (DbType = Guid), @__get_Item_1='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."UserId", a."RoleId"
+FROM "AspNetUserRoles" AS a
+WHERE a."UserId" = @__get_Item_0 AND a."RoleId" = @__get_Item_1
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:15:25 +07:00 INF] Now listening on: http://localhost:5105 <s:Microsoft.Hosting.Lifetime>
+[2024-04-21 00:15:25 +07:00 INF] Application started. Press Ctrl+C to shut down. <s:Microsoft.Hosting.Lifetime>
+[2024-04-21 00:15:25 +07:00 INF] Hosting environment: Development <s:Microsoft.Hosting.Lifetime>
+[2024-04-21 00:15:25 +07:00 INF] Content root path: D:\prog\a_projects\back\Internship\Internship-system.API <s:Microsoft.Hosting.Lifetime>
+[2024-04-21 00:15:26 +07:00 INF] Request starting HTTP/1.1 GET http://localhost:5105/swagger/index.html - null null <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:15:26 +07:00 INF] Request finished HTTP/1.1 GET http://localhost:5105/swagger/index.html - 200 null text/html;charset=utf-8 541.1221ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:15:26 +07:00 INF] Request starting HTTP/1.1 GET http://localhost:5105/swagger/v1/swagger.json - null null <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:15:26 +07:00 INF] Request finished HTTP/1.1 GET http://localhost:5105/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 191.5372ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:15:29 +07:00 INF] Request starting HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - application/json 5 <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:15:29 +07:00 WRN] Failed to determine the https port for redirect. <s:Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware>
+[2024-04-21 00:15:29 +07:00 INF] CORS policy execution successful. <s:Microsoft.AspNetCore.Cors.Infrastructure.CorsService>
+[2024-04-21 00:15:29 +07:00 INF] Executing endpoint 'Internship_system.Controllers.InternshipAdminController.CommentStudentInternshipProgress (Internship-system.API)' <s:Microsoft.AspNetCore.Routing.EndpointMiddleware>
+[2024-04-21 00:15:29 +07:00 INF] Route matched with {action = "CommentStudentInternshipProgress", controller = "InternshipAdmin"}. Executing controller action with signature System.Threading.Tasks.Task CommentStudentInternshipProgress(System.String, System.Guid) on controller Internship_system.Controllers.InternshipAdminController (Internship-system.API). <s:Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker>
+[2024-04-21 00:15:33 +07:00 INF] Executed DbCommand (15ms) [Parameters=[@__internshipProgressId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT t."Id", t."AdditionalInfo", t."CompanyId", t."CreatedAt", t."EditedAt", t."Priority", t."ProgressStatus", t."StudentId", c."Id", c."InternshipProgressId", c."PracticeDiaryId", c."RoleType", c."Text", c."UserId"
+FROM (
+    SELECT i."Id", i."AdditionalInfo", i."CompanyId", i."CreatedAt", i."EditedAt", i."Priority", i."ProgressStatus", i."StudentId"
+    FROM "InternshipProgresses" AS i
+    WHERE i."Id" = @__internshipProgressId_0
+    LIMIT 1
+) AS t
+LEFT JOIN "Comments" AS c ON t."Id" = c."InternshipProgressId"
+ORDER BY t."Id" <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:15:33 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__get_Item_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Discriminator", a."Email", a."EmailConfirmed", a."FullName", a."JoinedAt", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName", a."CourseNumber", a."Group"
+FROM "AspNetUsers" AS a
+WHERE a."Id" = @__get_Item_0
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:15:33 +07:00 INF] Executed DbCommand (2ms) [Parameters=[@__userId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."Name"
+FROM "AspNetUserRoles" AS a
+INNER JOIN "AspNetRoles" AS a0 ON a."RoleId" = a0."Id"
+WHERE a."UserId" = @__userId_0 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:15:34 +07:00 INF] Executed DbCommand (6ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Guid), @p2='?' (DbType = Guid), @p3='?' (DbType = Int32), @p4='?', @p5='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "Comments" ("Id", "InternshipProgressId", "PracticeDiaryId", "RoleType", "Text", "UserId")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5); <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:15:34 +07:00 INF] Executed action Internship_system.Controllers.InternshipAdminController.CommentStudentInternshipProgress (Internship-system.API) in 4588.1262ms <s:Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker>
+[2024-04-21 00:15:34 +07:00 INF] Executed endpoint 'Internship_system.Controllers.InternshipAdminController.CommentStudentInternshipProgress (Internship-system.API)' <s:Microsoft.AspNetCore.Routing.EndpointMiddleware>
+[2024-04-21 00:15:34 +07:00 INF] Request finished HTTP/1.1 POST http://localhost:5105/admin/internship/01bcabf4-6c0c-48eb-89aa-7a017f1777d1 - 200 0 null 4835.494ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:15:55 +07:00 INF] Request starting HTTP/1.1 GET http://localhost:5105/admin/internship/students/01bcabf4-6c0c-48eb-89aa-7a017f1777d2 - null null <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:15:55 +07:00 INF] Executing endpoint 'Internship_system.Controllers.InternshipAdminController.GetStudentCompanies (Internship-system.API)' <s:Microsoft.AspNetCore.Routing.EndpointMiddleware>
+[2024-04-21 00:15:55 +07:00 INF] Route matched with {action = "GetStudentCompanies", controller = "InternshipAdmin"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Internship_system.BLL.DTOs.InternshipAdmin.StudentStatusDto]] GetStudentCompanies(System.Guid) on controller Internship_system.Controllers.InternshipAdminController (Internship-system.API). <s:Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker>
+[2024-04-21 00:15:55 +07:00 INF] Executed DbCommand (3ms) [Parameters=[@__userId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT t."Id", t."AccessFailedCount", t."ConcurrencyStamp", t."Discriminator", t."Email", t."EmailConfirmed", t."FullName", t."JoinedAt", t."LockoutEnabled", t."LockoutEnd", t."NormalizedEmail", t."NormalizedUserName", t."PasswordHash", t."PhoneNumber", t."PhoneNumberConfirmed", t."SecurityStamp", t."TwoFactorEnabled", t."UserName", t."CourseNumber", t."Group", t0."Id", t0."AdditionalInfo", t0."CompanyId", t0."CreatedAt", t0."EditedAt", t0."Priority", t0."ProgressStatus", t0."StudentId", t0."Id0", t0."IsPartner", t0."Name"
+FROM (
+    SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Discriminator", a."Email", a."EmailConfirmed", a."FullName", a."JoinedAt", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName", a."CourseNumber", a."Group"
+    FROM "AspNetUsers" AS a
+    WHERE a."Discriminator" = 'Student' AND a."Id" = @__userId_0
+    LIMIT 1
+) AS t
+LEFT JOIN (
+    SELECT i."Id", i."AdditionalInfo", i."CompanyId", i."CreatedAt", i."EditedAt", i."Priority", i."ProgressStatus", i."StudentId", c."Id" AS "Id0", c."IsPartner", c."Name"
+    FROM "InternshipProgresses" AS i
+    INNER JOIN "Companies" AS c ON i."CompanyId" = c."Id"
+) AS t0 ON t."Id" = t0."StudentId"
+ORDER BY t."Id", t0."Id" <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:15:55 +07:00 INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Internship_system.BLL.DTOs.InternshipAdmin.StudentStatusDto, Internship-system.BLL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'. <s:Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor>
+[2024-04-21 00:15:55 +07:00 INF] Executed action Internship_system.Controllers.InternshipAdminController.GetStudentCompanies (Internship-system.API) in 62.442ms <s:Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker>
+[2024-04-21 00:15:55 +07:00 INF] Executed endpoint 'Internship_system.Controllers.InternshipAdminController.GetStudentCompanies (Internship-system.API)' <s:Microsoft.AspNetCore.Routing.EndpointMiddleware>
+[2024-04-21 00:15:55 +07:00 INF] Request finished HTTP/1.1 GET http://localhost:5105/admin/internship/students/01bcabf4-6c0c-48eb-89aa-7a017f1777d2 - 200 null application/json; charset=utf-8 76.3688ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:42:33 +07:00 INF] Executed DbCommand (106ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+) <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:42:33 +07:00 INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId"; <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:42:33 +07:00 INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+) <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:42:33 +07:00 INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+) <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:42:33 +07:00 INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId"; <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:42:33 +07:00 INF] No migrations were applied. The database is already up to date. <s:Microsoft.EntityFrameworkCore.Migrations>
+[2024-04-21 00:42:33 +07:00 INF] User profile is available. Using 'C:\Users\danka\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest. <s:Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager>
+[2024-04-21 00:42:33 +07:00 INF] Executed DbCommand (25ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName", a."RoleType"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:42:33 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName", a."RoleType"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedName_0
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:42:33 +07:00 INF] Executed DbCommand (4ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Discriminator", a."Email", a."EmailConfirmed", a."FullName", a."JoinedAt", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName", a."CourseNumber", a."Group"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:42:33 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Discriminator", a."Email", a."EmailConfirmed", a."FullName", a."JoinedAt", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName", a."CourseNumber", a."Group"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:42:33 +07:00 INF] Executed DbCommand (1ms) [Parameters=[@__normalizedRoleName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName", a."RoleType"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedRoleName_0
+LIMIT 2 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:42:34 +07:00 INF] Executed DbCommand (5ms) [Parameters=[@__get_Item_0='?' (DbType = Guid), @__get_Item_1='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."UserId", a."RoleId"
+FROM "AspNetUserRoles" AS a
+WHERE a."UserId" = @__get_Item_0 AND a."RoleId" = @__get_Item_1
+LIMIT 1 <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:42:34 +07:00 INF] Now listening on: http://localhost:5105 <s:Microsoft.Hosting.Lifetime>
+[2024-04-21 00:42:34 +07:00 INF] Application started. Press Ctrl+C to shut down. <s:Microsoft.Hosting.Lifetime>
+[2024-04-21 00:42:34 +07:00 INF] Hosting environment: Development <s:Microsoft.Hosting.Lifetime>
+[2024-04-21 00:42:34 +07:00 INF] Content root path: D:\prog\a_projects\back\Internship\Internship-system.API <s:Microsoft.Hosting.Lifetime>
+[2024-04-21 00:42:34 +07:00 INF] Request starting HTTP/1.1 GET http://localhost:5105/swagger/index.html - null null <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:42:35 +07:00 INF] Request finished HTTP/1.1 GET http://localhost:5105/swagger/index.html - 200 null text/html;charset=utf-8 214.891ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:42:35 +07:00 INF] Request starting HTTP/1.1 GET http://localhost:5105/swagger/v1/swagger.json - null null <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:42:35 +07:00 INF] Request finished HTTP/1.1 GET http://localhost:5105/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 203.3097ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:42:49 +07:00 INF] Request starting HTTP/1.1 GET http://localhost:5105/admin/internship/students/01bcabf4-6c0c-48eb-89aa-7a017f1777d2 - null null <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:42:49 +07:00 WRN] Failed to determine the https port for redirect. <s:Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware>
+[2024-04-21 00:42:49 +07:00 INF] Executing endpoint 'Internship_system.Controllers.InternshipAdminController.GetStudentCompanies (Internship-system.API)' <s:Microsoft.AspNetCore.Routing.EndpointMiddleware>
+[2024-04-21 00:42:49 +07:00 INF] Route matched with {action = "GetStudentCompanies", controller = "InternshipAdmin"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Internship_system.BLL.DTOs.InternshipAdmin.StudentStatusDto]] GetStudentCompanies(System.Guid) on controller Internship_system.Controllers.InternshipAdminController (Internship-system.API). <s:Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker>
+[2024-04-21 00:42:49 +07:00 WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'. <s:Microsoft.EntityFrameworkCore.Query>
+[2024-04-21 00:42:49 +07:00 INF] Executed DbCommand (10ms) [Parameters=[@__userId_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT t."Id", t."AccessFailedCount", t."ConcurrencyStamp", t."Discriminator", t."Email", t."EmailConfirmed", t."FullName", t."JoinedAt", t."LockoutEnabled", t."LockoutEnd", t."NormalizedEmail", t."NormalizedUserName", t."PasswordHash", t."PhoneNumber", t."PhoneNumberConfirmed", t."SecurityStamp", t."TwoFactorEnabled", t."UserName", t."CourseNumber", t."Group", t0."Id", t0."AdditionalInfo", t0."CompanyId", t0."CreatedAt", t0."EditedAt", t0."Priority", t0."ProgressStatus", t0."StudentId", t0."Id0", t0."IsPartner", t0."Name", t0."Id1", t0."InternshipProgressId", t0."PracticeDiaryId", t0."RoleType", t0."Text", t0."UserId", t0."Id00", t0."AccessFailedCount", t0."ConcurrencyStamp", t0."Discriminator", t0."Email", t0."EmailConfirmed", t0."FullName", t0."JoinedAt", t0."LockoutEnabled", t0."LockoutEnd", t0."NormalizedEmail", t0."NormalizedUserName", t0."PasswordHash", t0."PhoneNumber", t0."PhoneNumberConfirmed", t0."SecurityStamp", t0."TwoFactorEnabled", t0."UserName", t0."CourseNumber", t0."Group"
+FROM (
+    SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Discriminator", a."Email", a."EmailConfirmed", a."FullName", a."JoinedAt", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName", a."CourseNumber", a."Group"
+    FROM "AspNetUsers" AS a
+    WHERE a."Discriminator" = 'Student' AND a."Id" = @__userId_0
+    LIMIT 1
+) AS t
+LEFT JOIN (
+    SELECT i."Id", i."AdditionalInfo", i."CompanyId", i."CreatedAt", i."EditedAt", i."Priority", i."ProgressStatus", i."StudentId", c."Id" AS "Id0", c."IsPartner", c."Name", t1."Id" AS "Id1", t1."InternshipProgressId", t1."PracticeDiaryId", t1."RoleType", t1."Text", t1."UserId", t1."Id0" AS "Id00", t1."AccessFailedCount", t1."ConcurrencyStamp", t1."Discriminator", t1."Email", t1."EmailConfirmed", t1."FullName", t1."JoinedAt", t1."LockoutEnabled", t1."LockoutEnd", t1."NormalizedEmail", t1."NormalizedUserName", t1."PasswordHash", t1."PhoneNumber", t1."PhoneNumberConfirmed", t1."SecurityStamp", t1."TwoFactorEnabled", t1."UserName", t1."CourseNumber", t1."Group"
+    FROM "InternshipProgresses" AS i
+    INNER JOIN "Companies" AS c ON i."CompanyId" = c."Id"
+    LEFT JOIN (
+        SELECT c0."Id", c0."InternshipProgressId", c0."PracticeDiaryId", c0."RoleType", c0."Text", c0."UserId", a0."Id" AS "Id0", a0."AccessFailedCount", a0."ConcurrencyStamp", a0."Discriminator", a0."Email", a0."EmailConfirmed", a0."FullName", a0."JoinedAt", a0."LockoutEnabled", a0."LockoutEnd", a0."NormalizedEmail", a0."NormalizedUserName", a0."PasswordHash", a0."PhoneNumber", a0."PhoneNumberConfirmed", a0."SecurityStamp", a0."TwoFactorEnabled", a0."UserName", a0."CourseNumber", a0."Group"
+        FROM "Comments" AS c0
+        INNER JOIN "AspNetUsers" AS a0 ON c0."UserId" = a0."Id"
+    ) AS t1 ON i."Id" = t1."InternshipProgressId"
+) AS t0 ON t."Id" = t0."StudentId"
+ORDER BY t."Id", t0."Id", t0."Id0", t0."Id1" <s:Microsoft.EntityFrameworkCore.Database.Command>
+[2024-04-21 00:42:49 +07:00 INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Internship_system.BLL.DTOs.InternshipAdmin.StudentStatusDto, Internship-system.BLL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'. <s:Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor>
+[2024-04-21 00:42:49 +07:00 INF] Executed action Internship_system.Controllers.InternshipAdminController.GetStudentCompanies (Internship-system.API) in 392.2068ms <s:Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker>
+[2024-04-21 00:42:49 +07:00 INF] Executed endpoint 'Internship_system.Controllers.InternshipAdminController.GetStudentCompanies (Internship-system.API)' <s:Microsoft.AspNetCore.Routing.EndpointMiddleware>
+[2024-04-21 00:42:49 +07:00 INF] Request finished HTTP/1.1 GET http://localhost:5105/admin/internship/students/01bcabf4-6c0c-48eb-89aa-7a017f1777d2 - 200 null application/json; charset=utf-8 464.4604ms <s:Microsoft.AspNetCore.Hosting.Diagnostics>
+[2024-04-21 00:47:00 +07:00 INF] Application is shutting down... <s:Microsoft.Hosting.Lifetime>
