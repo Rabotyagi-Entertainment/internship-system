@@ -34,17 +34,17 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="..\.dockerignore">
-            <Link>.dockerignore</Link>
-        </Content>
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\Internship-system.BLL\Internship-system.BLL.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="logs\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

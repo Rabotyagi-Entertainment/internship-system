@@ -1,0 +1,29 @@
+﻿services:
+  internship-system:
+    image: internship-system
+    build:
+      context: .
+      dockerfile: Internship-system.API/Dockerfile
+    restart: always
+    environment:
+        - CONNECTIONSTRINGS__INTERDATABASE=User ID=postgres;Password=postgres;Host=postgres;Port=5432;Database=postgresXXX123@
+    ports:
+        - "7000:8080"
+    depends_on:
+        - postgres
+    volumes:
+        - /var/log/internship:/app/logs
+  postgres:
+    image: postgres:latest
+    command: postgres -c 'max_connections=250'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgresXXX123@
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
