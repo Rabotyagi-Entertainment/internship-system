@@ -6,7 +6,7 @@
       dockerfile: Internship-system.API/Dockerfile
     restart: always
     environment:
-      - CONNECTIONSTRINGS__DATABASE=User ID=postgres;Password=postgres;Host=postgres;Port=5432;Database=inter-db
+      - CONNECTIONSTRINGS__DATABASE=User ID=userr;Password=pass;Host=postgres;Port=5432;Database=inter-db
     ports:
         - "7000:8080"
     depends_on:
@@ -17,8 +17,8 @@
     image: postgres:latest
     command: postgres -c 'max_connections=250'
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: userr
+      POSTGRES_PASSWORD: pass
     restart: always
     ports:
       - "5432:5432"
