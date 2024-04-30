@@ -55,7 +55,9 @@ public class PracticeDiaryService {
             .FirstOrDefaultAsync(s => s.Id == diaryId);
         if (diary == null)
             throw new NotFoundException("Diary not found");
-        string filePath = "../internship-system.Common/Src/PracticeDiary_CourseWork.docx";
+        var filePath = diary.DiaryType == PracticeDiaryType.Default 
+            ? "../internship-system.Common/Src/PracticeDiary_Default.docx"
+            : "../internship-system.Common/Src/PracticeDiary_CourseWork.docx";
 
         var byteArray = File.OpenRead(filePath);
         var sourceDoc = DocX.Load(byteArray);
@@ -64,6 +66,18 @@ public class PracticeDiaryService {
                     var replace = new StringReplaceTextOptions {
                         NewValue = diary.Internship.Student.FullName,
                         SearchValue = "ФИО обучающегося",
+                        NewFormatting = new Formatting {
+                            Bold = false,
+                        }
+                    };
+                    paragraph.ReplaceText(replace);
+                }
+                if (paragraph.Text.Contains("3 курс")) {
+                    var replace = new StringReplaceTextOptions {
+                        NewValue = diary.Internship.Student.CourseNumber == null
+                            ? "3 курс" 
+                            : diary.Internship.Student.CourseNumber + " курс",
+                        SearchValue = "3 курс",
                         NewFormatting = new Formatting {
                             Bold = false,
                         }

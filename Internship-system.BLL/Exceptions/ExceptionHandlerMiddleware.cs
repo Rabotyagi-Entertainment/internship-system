@@ -48,6 +48,17 @@ public class ExceptionHandlerMiddleware {
             context.Response.ContentType = "application/json";
             await context.Response.WriteAsync(errorDetails.ToString());
         }
+        catch (ConflictException ex) {
+            var errorDetails = new ErrorDetails {
+                StatusCode = (int)HttpStatusCode.Conflict,
+                Message = ex.Message,
+                TraceId = Activity.Current?.Id ?? context.TraceIdentifier
+            };
+            _logger.LogError(ex, "{Message}", errorDetails.ToString());
+            context.Response.StatusCode = (int)HttpStatusCode.Conflict;
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsync(errorDetails.ToString());
+        }
         catch (BadRequestException ex) {
             var errorDetails = new ErrorDetails {
                 StatusCode = (int)HttpStatusCode.BadRequest,
