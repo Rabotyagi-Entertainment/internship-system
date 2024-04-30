@@ -12,7 +12,7 @@ public static class ServicesExtension {
     public static IServiceCollection AddIdentityManagers(this IServiceCollection services,
         IConfiguration configuration) {
         services.AddDbContext<InterDbContext>(options => 
-            options.UseNpgsql(configuration.GetConnectionString("InterDatabase")));
+            options.UseNpgsql(configuration.GetConnectionString("Database")));
         
         services.AddIdentity<User, Role>(o => {
                 // configure identity options
