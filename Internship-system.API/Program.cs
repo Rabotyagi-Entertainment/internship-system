@@ -7,9 +7,11 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors(options => {
+builder.Services.AddCors(options =>
+{
     options.AddDefaultPolicy(
-        policy => {
+        policy =>
+        {
             policy.AllowAnyOrigin()
                 .AllowAnyHeader()
                 .AllowAnyMethod();
@@ -20,7 +22,8 @@ builder.Services.AddCors(options => {
 
 builder.Services.AddIdentityManagers(builder.Configuration);
 
-builder.Services.AddControllers().AddJsonOptions(opts => {
+builder.Services.AddControllers().AddJsonOptions(opts =>
+{
     var enumConverter = new JsonStringEnumConverter();
     opts.JsonSerializerOptions.Converters.Add(enumConverter);
 });
@@ -33,14 +36,7 @@ builder.Services.AddSwagger();
 builder.Services.AddAuthorization();
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
-builder.Services.AddScoped<InternshipAdminService>();
-
-var logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(builder.Configuration)
-    .Enrich.FromLogContext()
-    .CreateLogger();
-builder.Logging.ClearProviders();
-builder.Logging.AddSerilog(logger);
+builder.ConfigureLogging();
 
 var app = builder.Build();
 

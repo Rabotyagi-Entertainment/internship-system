@@ -9,11 +9,13 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Internship_system.BLL.Extensions;
 
 public static class ServicesExtension {
-    public static IServiceCollection AddIdentityManagers(this IServiceCollection services,
-        IConfiguration configuration) {
-        services.AddDbContext<InterDbContext>(options => 
+    public static IServiceCollection AddIdentityManagers(
+        this IServiceCollection services,
+        IConfiguration configuration
+    ) {
+        services.AddDbContext<InterDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("Database")));
-        
+
         services.AddIdentity<User, Role>(o => {
                 // configure identity options
                 o.Password.RequireDigit = false;
@@ -27,13 +29,14 @@ public static class ServicesExtension {
             .AddSignInManager<SignInManager<User>>()
             .AddUserManager<UserManager<User>>()
             .AddRoleManager<RoleManager<Role>>();
-        
-        
-        
+
+
+
         services.AddScoped<AuthService>();
         services.AddScoped<PracticeDiaryService>();
         services.AddScoped<InternshipService>();
-        
+        services.AddScoped<InternshipAdminService>();
+
         return services;
     }
 }

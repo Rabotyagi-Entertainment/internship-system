@@ -3,7 +3,7 @@ using internship_system.Common.Enums;
 namespace Internship_system.DAL.Data.Entities;
 
 public class InternshipProgress {
-    public Guid Id { get; set;} = Guid.NewGuid();
+    public Guid Id { get; set; } = Guid.NewGuid();
     public Student Student { get; set; }
     public Company Company { get; set; }
     public int? Priority { get; set; }

@@ -3,21 +3,8 @@ using Microsoft.OpenApi.Models;
 
 namespace Internship_system.Configuration;
 
-public static class SwaggerExtensions
+public static class SwaggerConfiguration
 {
-    public static void Main()
-    {
-        List<int> numbers = new List<int> { 1, 2, 3, 4 };
-        IEnumerable<int> squares = numbers
-            .Where(x => x % 2 == 0)
-            .Select(x => x * 2);
-
-        foreach (var square in squares)
-        {
-            Console.WriteLine(square);
-        }
-    }
-
     public static void AddSwagger(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddSwaggerGen(option =>
