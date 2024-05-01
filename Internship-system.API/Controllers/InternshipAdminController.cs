@@ -46,7 +46,7 @@ public class InternshipAdminController : ControllerBase
     [Route("students/table")]
     public async Task ExportStudentsAsTable()
     {
-        return;
+        await _internshipAdminService.ExportStudentsAsTable();
     }
     
     /// <summary>

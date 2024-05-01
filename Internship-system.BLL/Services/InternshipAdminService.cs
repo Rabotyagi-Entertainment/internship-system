@@ -49,46 +49,88 @@ public class InternshipAdminService
             {
                 await studentsTable.CopyToAsync(stream);
             }
-
+            
+            var studentDtos = new List<UploadStudentDto>();
             if (File.Exists(filePath))
             {
+                //todo: error here after exporting students as table in current realization 
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 ExcelPackage package = new ExcelPackage(new FileInfo(filePath));
                 ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
 
                 int rowCount = worksheet.Dimension.Rows;
-                int colCount = worksheet.Dimension.Columns;
-
-                for (int row = 1; row <= rowCount; row++)
+                for (int i = 0; i < rowCount - 1; i++)
                 {
-                    for (int col = 1; col <= colCount; col++)
-                    {
-                        Console.WriteLine(worksheet.Cells[row, col].Value.ToString());
-                    }
+                    var newStudentDto = new UploadStudentDto();
+                    studentDtos.Add(newStudentDto);
+                }
+                
+                for (int row = 2; row <= rowCount; row++)
+                {
+                    studentDtos[row - 2].Fullname = worksheet.Cells[row, 1].Value.ToString();
+                    studentDtos[row - 2].Group = worksheet.Cells[row, 2].Value.ToString();
+                    studentDtos[row - 2].CourseNumber = int.Parse(worksheet.Cells[row, 3].Value.ToString());
+                    studentDtos[row - 2].Email = worksheet.Cells[row, 4].Value.ToString();
                 }
                 
                 package.Dispose();
             }
-        }
-        
-        /*foreach (var s in students)
-        {
-            var student = new Student()
+            
+            foreach (var s in studentDtos)
             {
-                FullName = s.Fullname,
-                UserName = s.Email,
-                Email = s.Email,
-                JoinedAt = DateTime.UtcNow,
-                Group = s.Group,
-                CourseNumber = s.CourseNumber
-            };
+                var findStudent = await _userManager.FindByEmailAsync(s.Email) as Student;
+                if (findStudent == null)
+                {
+                    var student = new Student()
+                    {
+                        FullName = s.Fullname,
+                        UserName = s.Email,
+                        Email = s.Email,
+                        JoinedAt = DateTime.UtcNow,
+                        Group = s.Group,
+                        CourseNumber = s.CourseNumber
+                    };
+
+                    var result = await _userManager.CreateAsync(student, "qwerty123");
+                    if (!result.Succeeded) throw new InvalidOperationException($"Unable to create student user");
+
+                    var studentEntity = await _userManager.FindByIdAsync(student.Id.ToString());
+                    await _userManager.AddToRoleAsync(studentEntity, ApplicationRoleNames.Student);
+                }
+                else
+                {
+                    findStudent.FullName = s.Fullname;
+                    findStudent.Group = s.Group;
+                    findStudent.CourseNumber = s.CourseNumber;
+                    await _userManager.UpdateAsync(findStudent);
+                }
+            }
             
-            var result = await _userManager.CreateAsync(student, "qwerty123");
-            if(!result.Succeeded) throw new InvalidOperationException($"Unable to create student user");
-            
-            var studentEntity = await _userManager.FindByIdAsync(student.Id.ToString());
-            await _userManager.AddToRoleAsync(studentEntity, ApplicationRoleNames.Student);
-        }*/
+            File.Delete(filePath);
+            Directory.Delete(uploadDir);
+        }
+    }
+
+    public async Task ExportStudentsAsTable()
+    {
+        var uploadDir = $"{Directory.GetCurrentDirectory()}/Uploads";
+        if (!Directory.Exists(uploadDir))
+        {
+            Directory.CreateDirectory(uploadDir);
+        }
+
+        var filePath = Path.Combine(uploadDir, "exportStudents.xlsx");
+        
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+        var package = new ExcelPackage(new FileInfo(filePath));
+        var workbook = package.Workbook.Worksheets[0];
+        var val = workbook.Cells[2, 2].Value.ToString();
+        workbook.Cells[2, 2].Value = "test";
+        val = workbook.Cells[2, 2].Value.ToString();
+        
+        await package.SaveAsync();
+
+        package.Dispose();
     }
 
     public async Task<List<StudentStatusDto>> GetStudentCompanies(Guid userId)
