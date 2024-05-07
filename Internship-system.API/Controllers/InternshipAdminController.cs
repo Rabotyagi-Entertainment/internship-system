@@ -44,9 +44,11 @@ public class InternshipAdminController : ControllerBase
     /// </summary>
     [HttpGet]
     [Route("students/table")]
-    public async Task ExportStudentsAsTable()
+    public async Task<IActionResult> ExportStudentsAsTable()
     {
-        await _internshipAdminService.ExportStudentsAsTable();
+        var result = await _internshipAdminService.ExportStudentsAsTable();
+        result.Position = 0;
+        return File(result, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "exportStudents.xlsx");
     }
     
     /// <summary>

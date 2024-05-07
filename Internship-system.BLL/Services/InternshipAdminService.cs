@@ -61,16 +61,19 @@ public class InternshipAdminService
                 int rowCount = worksheet.Dimension.Rows;
                 for (int i = 0; i < rowCount - 1; i++)
                 {
-                    var newStudentDto = new UploadStudentDto();
-                    studentDtos.Add(newStudentDto);
+                    if (CellExists(worksheet, i + 2, 1))
+                    {
+                        var newStudentDto = new UploadStudentDto();
+                        studentDtos.Add(newStudentDto);
+                    }
                 }
                 
                 for (int row = 2; row <= rowCount; row++)
                 {
-                    studentDtos[row - 2].Fullname = worksheet.Cells[row, 1].Value.ToString();
-                    studentDtos[row - 2].Group = worksheet.Cells[row, 2].Value.ToString();
-                    studentDtos[row - 2].CourseNumber = int.Parse(worksheet.Cells[row, 3].Value.ToString());
-                    studentDtos[row - 2].Email = worksheet.Cells[row, 4].Value.ToString();
+                    if(CellExists(worksheet, row, 1)) studentDtos[row - 2].Fullname = worksheet.Cells[row, 1].Value.ToString();
+                    if(CellExists(worksheet, row, 2)) studentDtos[row - 2].Group = worksheet.Cells[row, 2].Value.ToString();
+                    if(CellExists(worksheet, row, 3)) studentDtos[row - 2].CourseNumber = int.Parse(worksheet.Cells[row, 3].Value.ToString());
+                    if(CellExists(worksheet, row, 4)) studentDtos[row - 2].Email = worksheet.Cells[row, 4].Value.ToString();
                 }
                 
                 package.Dispose();
@@ -105,13 +108,22 @@ public class InternshipAdminService
                     await _userManager.UpdateAsync(findStudent);
                 }
             }
+
+            var studentEntities = await _dbContext.Students.ToListAsync();
+            foreach (var studentEntity in studentEntities)
+            {
+                if (studentDtos.FirstOrDefault(std => std.Email == studentEntity.Email) == null)
+                {
+                    await _userManager.DeleteAsync(studentEntity);
+                }
+            }
             
             File.Delete(filePath);
-            Directory.Delete(uploadDir);
+            Directory.Delete(uploadDir, true);
         }
     }
 
-    public async Task ExportStudentsAsTable()
+    public async Task<MemoryStream> ExportStudentsAsTable()
     {
         var uploadDir = $"{Directory.GetCurrentDirectory()}/Uploads";
         if (!Directory.Exists(uploadDir))
@@ -124,12 +136,27 @@ public class InternshipAdminService
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         var package = new ExcelPackage(new FileInfo(filePath));
         var workbook = package.Workbook.Worksheets.Add("students");
-        workbook.Cells[2, 2].Value = "test";
-        
-        await package.SaveAsync();
+        workbook.Cells[1, 1].Value = "Fullname";
+        workbook.Cells[1, 2].Value = "Group";
+        workbook.Cells[1, 3].Value = "CourseNumber";
+        workbook.Cells[1, 4].Value = "Email";
 
-        package.Dispose();
-    }
+        var students = await _dbContext
+            .Students
+            .ToListAsync();
+        for (int i = 0; i < students.Count; i++)
+        {
+            workbook.Cells[i + 2, 1].Value = students[i].FullName;
+            workbook.Cells[i + 2, 2].Value = students[i].Group;
+            workbook.Cells[i + 2, 3].Value = students[i].CourseNumber;
+            workbook.Cells[i + 2, 4].Value = students[i].Email;
+        }
+        
+        var result = new MemoryStream();
+        result.Position = 0;
+        await package.SaveAsAsync(result);
+        
+        return result;    }
 
     public async Task<List<StudentStatusDto>> GetStudentCompanies(Guid userId)
     {
@@ -194,5 +221,20 @@ public class InternshipAdminService
         await _dbContext.Comments.AddAsync(newComment);
         internshipProgress.Comments.Add(newComment);
         await _dbContext.SaveChangesAsync();
-    } 
+    }
+
+
+    private bool CellExists(ExcelWorksheet worksheet, int row, int col)
+    {
+        try
+        {
+            var cell = worksheet.Cells[row, col].Value.ToString();
+            if (cell != null && (string)cell != "") return true;
+            return false;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 }
