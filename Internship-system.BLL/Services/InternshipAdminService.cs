@@ -123,10 +123,8 @@ public class InternshipAdminService
         
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         var package = new ExcelPackage(new FileInfo(filePath));
-        var workbook = package.Workbook.Worksheets[0];
-        var val = workbook.Cells[2, 2].Value.ToString();
+        var workbook = package.Workbook.Worksheets.Add("students");
         workbook.Cells[2, 2].Value = "test";
-        val = workbook.Cells[2, 2].Value.ToString();
         
         await package.SaveAsync();
 
