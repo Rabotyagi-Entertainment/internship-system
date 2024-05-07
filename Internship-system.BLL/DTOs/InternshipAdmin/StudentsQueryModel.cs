@@ -8,9 +8,6 @@ public class StudentsQueryModel
     [FromQuery(Name = "search")]
     public string? Search { get; set; }
     
-    [FromQuery(Name = "status")]
-    public ProgressStatus? Status { get; set; }
-    
     [FromQuery(Name = "company")]
     public string? Company { get; set; }
     

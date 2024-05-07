@@ -223,6 +223,53 @@ public class InternshipAdminService
         await _dbContext.SaveChangesAsync();
     }
 
+    public async Task<List<StudentInfoDto>> GetStudentsList(StudentsQueryModel query)
+    {
+        var students = await _dbContext
+            .Students
+            .Include(s => s.InternshipProgresses)
+            .ThenInclude(ip => ip.Company)
+            .ToListAsync();
+
+        if (query.Search != null)
+        {
+            students = students.Where(s => s.FullName.Contains(query.Search)).ToList();
+        }
+
+        if (query.Group != null)
+        {
+            students = students.Where(s => s.Group == query.Group).ToList();
+        }
+
+        if (query.Company != null)
+        {
+            students = students
+                .Where(s => s
+                    .InternshipProgresses
+                    .Any(ip => ip.Company.Name.Contains(query.Company)))
+                .ToList();
+        }
+
+        List<StudentInfoDto> studentInfoList = new();
+        foreach (var s in students)
+        {
+            var studentDto = new StudentInfoDto
+            {
+                Id = s.Id,
+                Name = s.FullName,
+                Group = s.Group
+            };
+            foreach (var ip in s.InternshipProgresses)
+            {
+                studentDto.Companies.Add(ip.Company.Name);
+            }
+            
+            studentInfoList.Add(studentDto);
+        }
+
+        return studentInfoList;
+    }
+    
 
     private bool CellExists(ExcelWorksheet worksheet, int row, int col)
     {

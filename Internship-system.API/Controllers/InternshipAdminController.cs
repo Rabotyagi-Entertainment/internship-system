@@ -68,7 +68,7 @@ public class InternshipAdminController : ControllerBase
     [Route("students")]
     public async Task<List<StudentInfoDto>> GetStudentsList([FromQuery] StudentsQueryModel query)
     {
-        return new List<StudentInfoDto>();
+        return await _internshipAdminService.GetStudentsList(query);
     }
 
     /// <summary>
