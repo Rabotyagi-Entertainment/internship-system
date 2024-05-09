@@ -11,6 +11,13 @@ public class AccountRegisterDto {
     [EmailAddress]
     [DisplayName("email")]
     public required string Email { get; set; }
+    
+    /// <summary>
+    /// User`s tg
+    /// </summary>
+    [Required]
+    [DisplayName("tgName")]
+    public required string TelegramUserName { get; set; }
 
     /// <summary>
     /// User`s password

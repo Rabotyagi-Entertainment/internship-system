@@ -15,7 +15,6 @@ public static class ServicesExtension {
     ) {
         services.AddDbContext<InterDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("Database")));
-
         services.AddIdentity<User, Role>(o => {
                 // configure identity options
                 o.Password.RequireDigit = false;
