@@ -34,9 +34,9 @@ public class InternshipAdminController : ControllerBase
     /// </summary>
     [HttpPost]
     [Route("students")]
-    public async Task UploadStudents([FromBody] List<UploadStudentDto> students)
+    public async Task UploadStudents(IFormFile studentsTable)
     {
-        await _internshipAdminService.UploadStudents(students);
+        await _internshipAdminService.UploadStudents(studentsTable);
     }
 
     /// <summary>
@@ -44,9 +44,11 @@ public class InternshipAdminController : ControllerBase
     /// </summary>
     [HttpGet]
     [Route("students/table")]
-    public async Task ExportStudentsAsTable()
+    public async Task<IActionResult> ExportStudentsAsTable()
     {
-        return;
+        var result = await _internshipAdminService.ExportStudentsAsTable();
+        result.Position = 0;
+        return File(result, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "exportStudents.xlsx");
     }
     
     /// <summary>
@@ -66,7 +68,7 @@ public class InternshipAdminController : ControllerBase
     [Route("students")]
     public async Task<List<StudentInfoDto>> GetStudentsList([FromQuery] StudentsQueryModel query)
     {
-        return new List<StudentInfoDto>();
+        return await _internshipAdminService.GetStudentsList(query);
     }
 
     /// <summary>
