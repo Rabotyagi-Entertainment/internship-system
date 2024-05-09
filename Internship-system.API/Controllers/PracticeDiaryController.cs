@@ -47,7 +47,7 @@ public class PracticeDiaryController: Controller {
     /// <summary>
     /// Edit general information in diary
     /// </summary>
-    [HttpPost]
+    [HttpPut]
     [Route("{diaryId}")]
     public async Task EditGeneralInfo(Guid diaryId, EditGeneralInfoDto dto) {
         await _practiceDiaryService.EditGeneralInfo(diaryId, dto);
@@ -55,7 +55,7 @@ public class PracticeDiaryController: Controller {
     /// <summary>
     /// Edit additional information in diary
     /// </summary>
-    [HttpPost]
+    [HttpPut]
     [Route("{diaryId}/additional-info")]
     public async Task EditAdditionalInfo(Guid diaryId, EditAdditionalInfoDto dto) {
         await _practiceDiaryService.EditAdditionalInfo(diaryId, dto);

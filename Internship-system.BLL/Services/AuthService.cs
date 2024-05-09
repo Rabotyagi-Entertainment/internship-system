@@ -38,15 +38,24 @@ public class AuthService {
         var worksheet = package.Workbook.Worksheets[0];
         var students = new List<StudentInfo>();
         for (var row = 2; row <= worksheet.Dimension.Rows; row++) {
-            var isNumber = int.TryParse(worksheet.Cells[row, 2].Text, out var courseNumber);
+            var isNumber = int.TryParse(worksheet.Cells[row, 3].Text, out var courseNumber);
             var student = new StudentInfo {
                 FullName = worksheet.Cells[row, 1].Text ?? "ERROR",
                 CourseNumber = isNumber ? courseNumber : null,
-                Group = worksheet.Cells[row, 3].Text ?? "ERROR",
+                Group = worksheet.Cells[row, 2].Text ?? "ERROR",
             };
             students.Add(student);
         }
 
+        var duplicates = await _interDbContext.StudentInfos
+            .Where(si => students
+                .Select(s=>s.FullName)
+                .Contains(si.FullName))
+            .AnyAsync();
+        
+        if (duplicates)
+            throw new ConflictException("One of the students already exist");
+        
         if (students.Count > 0) {
             _interDbContext.StudentInfos.AddRange(students);
             await _interDbContext.SaveChangesAsync();
@@ -75,7 +84,7 @@ public class AuthService {
         
         var user = new Student() {
             Email = accountRegisterDto.Email,
-            UserName = accountRegisterDto.Email,
+            UserName = accountRegisterDto.TelegramUserName,
             FullName = accountRegisterDto.FullName,
             CourseNumber = studentInfo.CourseNumber,
             Group = studentInfo.Group
@@ -144,6 +153,7 @@ public class AuthService {
             FullName = user.FullName,
             Email = user.Email,
             JoinedAt = user.JoinedAt,
+            TelegramUserName = user.UserName,
             Roles = roles
         };
     }
