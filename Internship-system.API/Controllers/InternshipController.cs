@@ -59,12 +59,12 @@ public class InternshipController : Controller {
     }
 
     [HttpPost]
-    [Route("progress/{internshipProgressId:guid}/diary")]
+    [Route("progress/{practiceDiaryId:guid}/diary")]
     [Authorize(AuthenticationSchemes = "Bearer")]
     [EndpointSummary("Оставить комментарий к компании")]
-    public async Task<IActionResult> LeaveCompanyComment(Guid internshipProgressId, [FromBody] StudentLeaveProgressCommentBody body) {
+    public async Task<IActionResult> LeaveCompanyComment(Guid practiceDiaryId, [FromBody] StudentLeaveProgressCommentBody body) {
         var userId = this.GetUserId();
-        var dto = new StudentLeaveDiaryCommentDto(internshipProgressId, userId, body.Text);
+        var dto = new StudentLeaveDiaryCommentDto(practiceDiaryId, userId, body.Text);
         var result = await _internshipService.StudentLeavePracticeDiaryComment(dto);
         return Ok(result);
     }
