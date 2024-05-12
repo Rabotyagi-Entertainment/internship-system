@@ -140,6 +140,7 @@ public class InternshipAdminService
         workbook.Cells[1, 2].Value = "Group";
         workbook.Cells[1, 3].Value = "CourseNumber";
         workbook.Cells[1, 4].Value = "Email";
+        workbook.Cells[1, 5].Value = "Telegram";
 
         var students = await _dbContext
             .Students
@@ -150,6 +151,7 @@ public class InternshipAdminService
             workbook.Cells[i + 2, 2].Value = students[i].Group;
             workbook.Cells[i + 2, 3].Value = students[i].CourseNumber;
             workbook.Cells[i + 2, 4].Value = students[i].Email;
+            workbook.Cells[i + 2, 5].Value = students[i].UserName;
         }
         
         var result = new MemoryStream();

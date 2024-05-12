@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Internship_system.BLL.DTOs;
 using Internship_system.BLL.Exceptions;
+using internship_system.Common.Enums;
 using Internship_system.DAL.Data;
 using Internship_system.DAL.Data.Entities;
 using Microsoft.AspNetCore.Http;
@@ -63,16 +64,16 @@ public class AuthService {
     }
 
     public async Task<string> RegisterAsync(AccountRegisterDto accountRegisterDto) {
-        if (accountRegisterDto.Email == null) {
-            throw new ArgumentNullException(nameof(accountRegisterDto), "Email is empty");
-        }
-
         if (accountRegisterDto.Password == null) {
             throw new ArgumentNullException(nameof(accountRegisterDto), "Password is empty");
         }
+        
+        if (accountRegisterDto.TelegramUserName == null) {
+            throw new ArgumentNullException(nameof(accountRegisterDto), "tg name is empty");
+        }
 
-        if (await _userManager.FindByEmailAsync(accountRegisterDto.Email) != null) {
-            throw new ConflictException("User with this email already exists");
+        if (await _userManager.FindByNameAsync(accountRegisterDto.TelegramUserName) != null) {
+            throw new ConflictException("User with this tg name already exists");
         }
 
         var studentInfo = await _interDbContext.StudentInfos
@@ -83,8 +84,8 @@ public class AuthService {
             throw new ForbiddenException("Student with this full name already registered");
         
         var user = new Student() {
-            Email = accountRegisterDto.Email,
             UserName = accountRegisterDto.TelegramUserName,
+            Email = accountRegisterDto.Email,
             FullName = accountRegisterDto.FullName,
             CourseNumber = studentInfo.CourseNumber,
             Group = studentInfo.Group
@@ -99,8 +100,13 @@ public class AuthService {
             _interDbContext.Update(studentInfo);
             await _interDbContext.SaveChangesAsync();
             
+            var createdUser = await _userManager
+                .FindByIdAsync(user.Id.ToString());
+
+            await _userManager.AddToRoleAsync(createdUser!, ApplicationRoleNames.Student);
+            
             return await LoginAsync(new AccountLoginDto()
-                { Email = accountRegisterDto.Email, Password = accountRegisterDto.Password });
+                { TelegramUserName = accountRegisterDto.TelegramUserName, Password = accountRegisterDto.Password });
         }
 
         var errors = string.Join(", ", result.Errors.Select(x => x.Description));
@@ -119,7 +125,7 @@ public class AuthService {
         }).ToList();
     }
     public async Task<string> LoginAsync(AccountLoginDto accountLoginDto) {
-        var identity = await GetIdentity(accountLoginDto.Email.ToLower(), accountLoginDto.Password);
+        var identity = await GetIdentity(accountLoginDto.TelegramUserName.ToLower(), accountLoginDto.Password);
         if (identity == null) {
             throw new BadRequestException("Incorrect username or password");
         }
@@ -158,8 +164,8 @@ public class AuthService {
         };
     }
 
-    private async Task<ClaimsIdentity?> GetIdentity(string email, string password) {
-        var user = await _userManager.FindByEmailAsync(email);
+    private async Task<ClaimsIdentity?> GetIdentity(string userName, string password) {
+        var user = await _userManager.FindByNameAsync(userName);
         if (user == null) {
             return null;
         }

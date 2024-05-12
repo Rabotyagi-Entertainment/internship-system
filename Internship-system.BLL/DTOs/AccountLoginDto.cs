@@ -5,12 +5,11 @@ namespace Internship_system.BLL.DTOs;
 
 public class AccountLoginDto {
     /// <summary>
-    /// User email
+    /// User`s tg
     /// </summary>
     [Required]
-    [EmailAddress]
-    [DisplayName("email")]
-    public required string Email { get; set; }
+    [DisplayName("tgName")]
+    public required string TelegramUserName { get; set; }
 
     /// <summary>
     /// User password

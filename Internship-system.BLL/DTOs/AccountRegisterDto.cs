@@ -7,10 +7,9 @@ public class AccountRegisterDto {
     /// <summary>
     /// User`s email
     /// </summary>
-    [Required]
     [EmailAddress]
     [DisplayName("email")]
-    public required string Email { get; set; }
+    public string? Email { get; set; }
     
     /// <summary>
     /// User`s tg
