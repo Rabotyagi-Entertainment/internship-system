@@ -41,9 +41,9 @@ public class AuthService {
         for (var row = 2; row <= worksheet.Dimension.Rows; row++) {
             var isNumber = int.TryParse(worksheet.Cells[row, 3].Text, out var courseNumber);
             var student = new StudentInfo {
-                FullName = worksheet.Cells[row, 1].Text ?? "ERROR",
+                FullName = worksheet.Cells[row, 1].Text ?? "НЕ ЗАПОЛНЕНО",
                 CourseNumber = isNumber ? courseNumber : null,
-                Group = worksheet.Cells[row, 2].Text ?? "ERROR",
+                Group = worksheet.Cells[row, 2].Text ?? "НЕ ЗАПОЛНЕНО",
             };
             students.Add(student);
         }
@@ -52,10 +52,10 @@ public class AuthService {
             .Where(si => students
                 .Select(s=>s.FullName)
                 .Contains(si.FullName))
-            .AnyAsync();
+            .ToListAsync();
         
-        if (duplicates)
-            throw new ConflictException("One of the students already exist");
+        if (duplicates.Count != 0)
+            throw new ConflictException("These students already exist: " + string.Join("\n", duplicates));
         
         if (students.Count > 0) {
             _interDbContext.StudentInfos.AddRange(students);

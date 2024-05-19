@@ -14,7 +14,6 @@ using Xceed.Words.NET;
 namespace Internship_system.BLL.Services;
 
 public class PracticeDiaryService {
-
     private readonly InterDbContext _interDbContext;
 
     public PracticeDiaryService(InterDbContext interDbContext) {
@@ -30,7 +29,7 @@ public class PracticeDiaryService {
             .Where(pd => pd.Internship.Student == student).Include(practiceDiary => practiceDiary.Internship)
             .ThenInclude(internship => internship.Company)
             .ToListAsync();
-        
+
         return diaries.Select(d => new PracticeDiaryDto {
             Id = d.Id,
             DiaryType = d.DiaryType,
@@ -39,13 +38,11 @@ public class PracticeDiaryService {
             TaskReportTable = d.TaskReportTable,
             StudentCharacteristics = d.StudentCharacteristics,
             CompanyName = d.Internship.Company.Name,
-            OrderNumber = d.Internship.OrderNumber,
             WorkName = d.WorkName,
             PlanTable = d.PlanTable
         }).ToList();
-
     }
-      
+
     public async Task<MemoryStream> GetDiaryFile(Guid diaryId) {
         var diary = await _interDbContext.PracticeDiaries
             .Include(d => d.Internship)
@@ -55,102 +52,125 @@ public class PracticeDiaryService {
             .FirstOrDefaultAsync(s => s.Id == diaryId);
         if (diary == null)
             throw new NotFoundException("Diary not found");
-        var filePath = diary.DiaryType == PracticeDiaryType.Default 
+        var filePath = diary.DiaryType == PracticeDiaryType.Default
             ? "../internship-system.Common/Src/PracticeDiary_Default.docx"
             : "../internship-system.Common/Src/PracticeDiary_CourseWork.docx";
 
         var byteArray = File.OpenRead(filePath);
         var sourceDoc = DocX.Load(byteArray);
-            foreach (var paragraph in sourceDoc.Paragraphs) {
-                if (paragraph.Text.Contains("ФИО обучающегося")) {
-                    var replace = new StringReplaceTextOptions {
-                        NewValue = diary.Internship.Student.FullName,
-                        SearchValue = "ФИО обучающегося",
-                        NewFormatting = new Formatting {
-                            Bold = false,
-                        }
-                    };
-                    paragraph.ReplaceText(replace);
-                }
-                if (paragraph.Text.Contains("3 курс")) {
-                    var replace = new StringReplaceTextOptions {
-                        NewValue = diary.Internship.Student.CourseNumber == null
-                            ? "3 курс" 
-                            : diary.Internship.Student.CourseNumber + " курс",
-                        SearchValue = "3 курс",
-                        NewFormatting = new Formatting {
-                            Bold = false,
-                        }
-                    };
-                    paragraph.ReplaceText(replace);
-                }
-                if (paragraph.Text.Contains("Полное название профильной организации")) {
-                    var replace = new StringReplaceTextOptions {
-                        NewValue = diary.Internship.Company.Name,
-                        SearchValue = "Полное название профильной организации",
-                        NewFormatting = new Formatting {
-                            Bold = false,
-                        }
-                    };
-                    paragraph.ReplaceText(replace);
-                }
-                if (paragraph.Text.Contains("Номер_приказа")) {
-                    var replace = new StringReplaceTextOptions {
-                        NewValue = diary.Internship.OrderNumber,
-                        SearchValue = "Номер_приказа",
-                        NewFormatting = new Formatting {
-                            Bold = false,
-                        }
-                    };
-                    paragraph.ReplaceText(replace);
-                } 
-                if (paragraph.Text.Contains("ФИО руководителя от профильной организации (куратора практики)")) {
-                    var replace = new StringReplaceTextOptions {
-                        NewValue = diary.CuratorFullName,
-                        SearchValue = "ФИО руководителя от профильной организации (куратора практики)",
-                        NewFormatting = new Formatting {
-                            Bold = false,
-                        }
-                    };
-                    paragraph.ReplaceText(replace);
-                } 
-                if (paragraph.Text.Contains("Характеристика")) {
-                    var replace = new StringReplaceTextOptions {
-                        NewValue = diary.StudentCharacteristics, 
-                        SearchValue = "Характеристика",
-                        NewFormatting = new Formatting {
-                            Bold = false,
-                        }
-                    };
-                    paragraph.ReplaceText(replace);
-                }
-
-                if (diary.DiaryType is PracticeDiaryType.CourseWork or PracticeDiaryType.GraduationWork) {
-                    if (paragraph.Text.Contains("Название_курсовой")) {
-                        var replace = new StringReplaceTextOptions {
-                            NewValue = diary.WorkName,
-                            SearchValue = "Название_курсовой",
-                            NewFormatting = new Formatting {
-                                Bold = false,
-                            }
-                        };
-                        paragraph.ReplaceText(replace);
-                    } 
-                    if (paragraph.Text.Contains("Обзор_методов")) {
-                        var replace = new StringReplaceTextOptions {
-                            NewValue = diary.PlanTable,
-                            SearchValue = "Обзор_методов",
-                            NewFormatting = new Formatting {
-                                Bold = false,
-                            }
-                        };
-                        paragraph.ReplaceText(replace);
-                    } 
-                }
+        foreach (var paragraph in sourceDoc.Paragraphs) {
+            if (paragraph.Text.Contains("ФИО обучающегося")) {
+                var replace = new StringReplaceTextOptions {
+                    NewValue = diary.Internship.Student.FullName,
+                    SearchValue = "ФИО обучающегося",
+                    NewFormatting = new Formatting {
+                        Bold = false,
+                    }
+                };
+                paragraph.ReplaceText(replace);
             }
 
+            if (paragraph.Text.Contains("3 курс")) {
+                var replace = new StringReplaceTextOptions {
+                    NewValue = diary.Internship.Student.CourseNumber == null
+                        ? diary.DiaryType == PracticeDiaryType.Default
+                            ? "2 курс"
+                            : diary.DiaryType == PracticeDiaryType.CourseWork
+                                ? "3 курс"
+                                : "4 курс"
+                        : diary.Internship.Student.CourseNumber + " курс",
+                    SearchValue = "3 курс",
+                    NewFormatting = new Formatting {
+                        Bold = false,
+                    }
+                };
+                paragraph.ReplaceText(replace);
+            }
+
+            if (paragraph.Text.Contains("Полное название профильной организации")) {
+                var replace = new StringReplaceTextOptions {
+                    NewValue = diary.Internship.Company.Name,
+                    SearchValue = "Полное название профильной организации",
+                    NewFormatting = new Formatting {
+                        Bold = false,
+                    }
+                };
+                paragraph.ReplaceText(replace);
+            }
+
+            if (paragraph.Text.Contains("Номер_приказа")) {
+                var replace = new StringReplaceTextOptions {
+                    NewValue = diary.OrderNumber ?? "НЕ ЗАПОЛНЕНО",
+                    SearchValue = "Номер_приказа",
+                    NewFormatting = new Formatting {
+                        Bold = false,
+                    }
+                };
+                paragraph.ReplaceText(replace);
+            }
+
+            if (paragraph.Text.Contains("Дата_приказа")) {
+                var replace = new StringReplaceTextOptions {
+                    NewValue = !diary.OrderDate.HasValue
+                        ? "НЕ ЗАПОЛНЕНО" 
+                        :  diary.OrderDate!.Value.ToShortDateString(),
+                    SearchValue = "Дата_приказа",
+                    NewFormatting = new Formatting {
+                        Bold = false,
+                    }
+                };
+                paragraph.ReplaceText(replace);
+            }
+
+            if (paragraph.Text.Contains("ФИО руководителя от профильной организации (куратора практики)")) {
+                var replace = new StringReplaceTextOptions {
+                    NewValue = diary.CuratorFullName ?? "НЕ ЗАПОЛНЕНО",
+                    SearchValue = "ФИО руководителя от профильной организации (куратора практики)",
+                    NewFormatting = new Formatting {
+                        Bold = false,
+                    }
+                };
+                paragraph.ReplaceText(replace);
+            }
+
+            if (paragraph.Text.Contains("Характеристика")) {
+                var replace = new StringReplaceTextOptions {
+                    NewValue = diary.StudentCharacteristics ?? "НЕ ЗАПОЛНЕНО",
+                    SearchValue = "Характеристика",
+                    NewFormatting = new Formatting {
+                        Bold = false,
+                    }
+                };
+                paragraph.ReplaceText(replace);
+            }
+
+            if (diary.DiaryType is PracticeDiaryType.CourseWork or PracticeDiaryType.GraduationWork) {
+                if (paragraph.Text.Contains("Название_курсовой")) {
+                    var replace = new StringReplaceTextOptions {
+                        NewValue = diary.WorkName ?? "НЕ ЗАПОЛНЕНО",
+                        SearchValue = "Название_курсовой",
+                        NewFormatting = new Formatting {
+                            Bold = false,
+                        }
+                    };
+                    paragraph.ReplaceText(replace);
+                }
+
+                if (paragraph.Text.Contains("Обзор_методов")) {
+                    var replace = new StringReplaceTextOptions {
+                        NewValue = diary.PlanTable ?? "НЕ ЗАПОЛНЕНО",
+                        SearchValue = "Обзор_методов",
+                        NewFormatting = new Formatting {
+                            Bold = false,
+                        }
+                    };
+                    paragraph.ReplaceText(replace);
+                }
+            }
+        }
+
         var ph = sourceDoc.Paragraphs
-               .FirstOrDefault(p => p.Text.Contains("Отчет о выполненных задачах"));
+            .FirstOrDefault(p => p.Text.Contains("Отчет о выполненных задачах"));
         if (ph != null && diary.TaskReportTable != null) {
             var rows = diary.TaskReportTable.Split('\n', StringSplitOptions.RemoveEmptyEntries);
 
@@ -173,12 +193,12 @@ public class PracticeDiaryService {
 
         MemoryStream ms = new MemoryStream();
 
-            sourceDoc.SaveAs(ms);
-            ms.Position = 0;
+        sourceDoc.SaveAs(ms);
+        ms.Position = 0;
 
-            return ms;
+        return ms;
     }
-    
+
     public async Task CreateDiary(Guid internshipId, PracticeDiaryType diaryType) {
         var internship = await _interDbContext.Internships
             .FirstOrDefaultAsync(s => s.Id == internshipId);
@@ -191,7 +211,7 @@ public class PracticeDiaryService {
         _interDbContext.Add(diary);
         await _interDbContext.SaveChangesAsync();
     }
-    
+
     public async Task EditGeneralInfo(Guid diaryId, EditGeneralInfoDto dto) {
         var diary = await _interDbContext.PracticeDiaries
             .FirstOrDefaultAsync(s => s.Id == diaryId);
@@ -199,9 +219,11 @@ public class PracticeDiaryService {
             throw new NotFoundException("Diary not found");
         diary.CuratorFullName = dto.CuratorFullName;
         diary.StudentCharacteristics = dto.StudentCharacteristics;
+        diary.OrderDate = dto.OrderDate;
+        diary.OrderNumber = dto.OrderNumber;
         _interDbContext.Update(diary);
         await _interDbContext.SaveChangesAsync();
-    } 
+    }
 
     public async Task EditAdditionalInfo(Guid diaryId, EditAdditionalInfoDto dto) {
         var diary = await _interDbContext.PracticeDiaries
@@ -209,10 +231,11 @@ public class PracticeDiaryService {
         if (diary == null)
             throw new NotFoundException("Diary not found");
         diary.WorkName = dto.WorkName;
+        diary.PlanTable = dto.PlanTable;
         _interDbContext.Update(diary);
         await _interDbContext.SaveChangesAsync();
-    } 
-    
+    }
+
     public async Task LoadXlsFile(Guid diaryId, IFormFile file) {
         var diary = await _interDbContext.PracticeDiaries
             .FirstOrDefaultAsync(s => s.Id == diaryId);
@@ -223,14 +246,14 @@ public class PracticeDiaryService {
         using var package = new ExcelPackage(stream);
         var worksheet = package.Workbook.Worksheets[0];
         var result = "";
-        for (var row = 2; row <= worksheet.Dimension.Rows; row++)
-        {
-            var startDate = worksheet.Cells[row, 1].Text; 
-            var endDate = worksheet.Cells[row, 2].Text; 
+        for (var row = 2; row <= worksheet.Dimension.Rows; row++) {
+            var startDate = worksheet.Cells[row, 1].Text;
+            var endDate = worksheet.Cells[row, 2].Text;
             var taskName = worksheet.Cells[row, 3].Text;
 
             result += $"{startDate};{endDate};{taskName}\n";
         }
+
         diary.TaskReportTable = result;
         _interDbContext.Update(diary);
         await _interDbContext.SaveChangesAsync();

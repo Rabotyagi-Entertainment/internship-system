@@ -7,7 +7,6 @@ public class Internship {
     public List<PracticeDiary> PracticeDiaries { get; set; } = new();
     public DateTime StartedAt { get; set; } = DateTime.UtcNow;
     public DateTime? EndedAt { get; set; }
-    public string? OrderNumber { get; set; } // номер приказа
 
     
 }

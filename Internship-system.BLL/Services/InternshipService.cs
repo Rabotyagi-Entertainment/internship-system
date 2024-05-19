@@ -37,7 +37,6 @@ public class InternshipService {
         return internshipProgress;
     }
 
-    [Authorize(AuthenticationSchemes = "Bearer")]
     public async Task<CompanyResponseDto> CreateNonPartnerCompany(CreateCustomCompanyDto request) {
         var company = new Company {
             Name = request.Name,
