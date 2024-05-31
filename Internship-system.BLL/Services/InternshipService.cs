@@ -19,9 +19,9 @@ public class InternshipService {
 
     // Где-то выше (или здесь) должна быть проверка на то, что студент - именно студент второго курса 
     public async Task<InternshipProgress> AddDesiredCompanyToInternship(InternshipCompanyDto dto) {
-        var student = await _dbContext.Students.FindAsync([dto.StudentId]) ??
+        var student = await _dbContext.Students.FindAsync(dto.StudentId) ??
                       throw new NotFoundException($"User with id {dto.StudentId} not found");
-        var company = await _dbContext.Companies.FindAsync([dto.CompanyId]) ??
+        var company = await _dbContext.Companies.FindAsync(dto.CompanyId) ??
                       throw new NotFoundException($"Company with id {dto.CompanyId} not found");
 
         var internshipProgress = new InternshipProgress {
@@ -61,10 +61,10 @@ public class InternshipService {
     }
 
     public async Task<StudentCommentDto> StudentLeaveProgressComment(StudentLeaveProgressCommentDto dto) {
-        var internshipProgress = await _dbContext.InternshipProgresses.FindAsync([dto.InternshipProgressId])
+        var internshipProgress = await _dbContext.InternshipProgresses.FindAsync(dto.InternshipProgressId)
                                  ?? throw new NotFoundException(
                                      $"Internship Progresses with id {dto.InternshipProgressId} not found");
-        var student = await _dbContext.Students.FindAsync([dto.StudentId]) ??
+        var student = await _dbContext.Students.FindAsync(dto.StudentId) ??
                       throw new NotFoundException($"User with id {dto.StudentId} not found");
 
         var comment = new Comment {
@@ -81,9 +81,9 @@ public class InternshipService {
     }
 
     public async Task<StudentCommentDto> StudentLeavePracticeDiaryComment(StudentLeaveDiaryCommentDto dto) {
-        var practiceDiary = await _dbContext.PracticeDiaries.FindAsync([dto.PracticeDiaryId])
+        var practiceDiary = await _dbContext.PracticeDiaries.FindAsync(dto.PracticeDiaryId)
                             ?? throw new NotFoundException($"Practice Diary with id {dto.PracticeDiaryId} not found");
-        var student = await _dbContext.Students.FindAsync([dto.StudentId]) ??
+        var student = await _dbContext.Students.FindAsync(dto.StudentId) ??
                       throw new NotFoundException($"User with id {dto.StudentId} not found");
 
         var comment = new Comment {
