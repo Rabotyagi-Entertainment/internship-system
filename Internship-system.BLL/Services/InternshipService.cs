@@ -2,6 +2,7 @@ using Internship_system.BLL.DTOs.Internship.Requests;
 using Internship_system.BLL.DTOs.Internship.Responses;
 using Internship_system.BLL.Exceptions;
 using internship_system.Common.Enums;
+using Internship_system.DAL.Configuration;
 using Internship_system.DAL.Data;
 using Internship_system.DAL.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -19,9 +20,9 @@ public class InternshipService {
 
     // Где-то выше (или здесь) должна быть проверка на то, что студент - именно студент второго курса 
     public async Task<InternshipProgress> AddDesiredCompanyToInternship(InternshipCompanyDto dto) {
-        var student = await _dbContext.Students.FindAsync([dto.StudentId]) ??
+        var student = await _dbContext.Students.FindAsync(dto.StudentId) ??
                       throw new NotFoundException($"User with id {dto.StudentId} not found");
-        var company = await _dbContext.Companies.FindAsync([dto.CompanyId]) ??
+        var company = await _dbContext.Companies.FindAsync(dto.CompanyId) ??
                       throw new NotFoundException($"Company with id {dto.CompanyId} not found");
 
         var internshipProgress = new InternshipProgress {
@@ -55,16 +56,31 @@ public class InternshipService {
                                  ?? throw new NotFoundException(
                                      $"Internship Progresses for company id '{dto.CompanyId}' and user id '{dto.StudentId}' not found");
 
+
         internshipProgress.ProgressStatus = dto.NewStatus;
+
+        if (dto.NewStatus == ProgressStatus.AcceptedOffer) {
+            var student = await _dbContext.Students.FindAsync(dto.StudentId) ??
+                          throw new NotFoundException($"User with id {dto.StudentId} not found");
+            var company = await _dbContext.Companies.FindAsync(dto.CompanyId) ??
+                          throw new NotFoundException($"Company with id {dto.CompanyId} not found");
+            _dbContext.Add(new Internship {
+                Student = student,
+                Company = company,
+                PracticeDiaries = [],
+                EndedAt = null
+            });
+        }
+
         _dbContext.Update(internshipProgress);
         await _dbContext.SaveChangesAsync();
     }
 
     public async Task<StudentCommentDto> StudentLeaveProgressComment(StudentLeaveProgressCommentDto dto) {
-        var internshipProgress = await _dbContext.InternshipProgresses.FindAsync([dto.InternshipProgressId])
+        var internshipProgress = await _dbContext.InternshipProgresses.FindAsync(dto.InternshipProgressId)
                                  ?? throw new NotFoundException(
                                      $"Internship Progresses with id {dto.InternshipProgressId} not found");
-        var student = await _dbContext.Students.FindAsync([dto.StudentId]) ??
+        var student = await _dbContext.Students.FindAsync(dto.StudentId) ??
                       throw new NotFoundException($"User with id {dto.StudentId} not found");
 
         var comment = new Comment {
@@ -81,9 +97,9 @@ public class InternshipService {
     }
 
     public async Task<StudentCommentDto> StudentLeavePracticeDiaryComment(StudentLeaveDiaryCommentDto dto) {
-        var practiceDiary = await _dbContext.PracticeDiaries.FindAsync([dto.PracticeDiaryId])
+        var practiceDiary = await _dbContext.PracticeDiaries.FindAsync(dto.PracticeDiaryId)
                             ?? throw new NotFoundException($"Practice Diary with id {dto.PracticeDiaryId} not found");
-        var student = await _dbContext.Students.FindAsync([dto.StudentId]) ??
+        var student = await _dbContext.Students.FindAsync(dto.StudentId) ??
                       throw new NotFoundException($"User with id {dto.StudentId} not found");
 
         var comment = new Comment {
@@ -97,5 +113,20 @@ public class InternshipService {
         await _dbContext.SaveChangesAsync();
 
         return new(null, practiceDiary.Id, student.Id, comment.RoleType, comment.Text);
+    }
+
+    public async Task<InternshipProgress> UpdateInternshipProgress(UpdateInternshipProgressDto dto) {
+        var internshipProgress = await _dbContext.InternshipProgresses.FindAsync(dto.InternshipProgressId)
+                                 ?? throw new NotFoundException($"Internship Progress with id {dto.InternshipProgressId} not found");
+
+        if (dto.Priority == null && dto.AdditionalInfo == null) throw new BadRequestException("There must be at least one change");
+
+        internshipProgress.Priority = dto.Priority ?? internshipProgress.Priority;
+        internshipProgress.AdditionalInfo = dto.AdditionalInfo ?? internshipProgress.AdditionalInfo;
+        internshipProgress.EditedAt = DateTime.UtcNow;
+
+        _dbContext.Update(internshipProgress);
+
+        return internshipProgress;
     }
 }

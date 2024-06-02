@@ -41,7 +41,7 @@ public class InternshipController : Controller {
     [HttpPut]
     [Route("company/{companyId:guid}/status")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    [EndpointSummary("Изменение статуса компании, выбранной студентом")]
+    [EndpointSummary("Изменение статуса компании для стажировки, выбранной студентом")]
     public async Task<IActionResult> ChangeCompanyStatus(Guid companyId, [FromBody] ProgressStatus status) {
         var userId = this.GetUserId();
         await _internshipService.UpdateCompanyStatus(new(userId, companyId, status));
@@ -59,13 +59,24 @@ public class InternshipController : Controller {
     }
 
     [HttpPost]
-    [Route("progress/{practiceDiaryId:guid}/diary")]
+    [Route("progress/diary/{practiceDiaryId:guid}")]
     [Authorize(AuthenticationSchemes = "Bearer")]
     [EndpointSummary("Оставить комментарий к компании")]
     public async Task<IActionResult> LeaveCompanyComment(Guid practiceDiaryId, [FromBody] StudentLeaveProgressCommentBody body) {
         var userId = this.GetUserId();
         var dto = new StudentLeaveDiaryCommentDto(practiceDiaryId, userId, body.Text);
         var result = await _internshipService.StudentLeavePracticeDiaryComment(dto);
+        return Ok(result);
+    }
+
+    [HttpPatch]
+    [Route("progress/{internshipProgressId:guid}/update")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    [EndpointSummary("Оставить комментарий к компании")]
+    public async Task<IActionResult> ChangeInternshipStatus(Guid internshipProgressId, [FromBody] UpdateInternshipProgressBody body) {
+        var userId = this.GetUserId();
+        var dto = new UpdateInternshipProgressDto(internshipProgressId, userId, body.Priority, body.AdditionalInfo);
+        var result = await _internshipService.UpdateInternshipProgress(dto);
         return Ok(result);
     }
     // Отправка сообщений в бота, как я понимаю, будет происходить автоматически на бэке

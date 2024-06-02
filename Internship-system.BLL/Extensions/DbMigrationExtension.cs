@@ -1,3 +1,4 @@
+using Internship_system.DAL.Configuration;
 using Internship_system.DAL.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;

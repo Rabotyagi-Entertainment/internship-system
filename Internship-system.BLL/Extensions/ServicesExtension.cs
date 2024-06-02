@@ -1,4 +1,5 @@
 using Internship_system.BLL.Services;
+using Internship_system.DAL.Configuration;
 using Internship_system.DAL.Data;
 using Internship_system.DAL.Data.Entities;
 using Microsoft.AspNetCore.Identity;

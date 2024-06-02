@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using Internship_system.BLL.DTOs.PracticeDiary;
 using Internship_system.BLL.Exceptions;
 using internship_system.Common.Enums;
+using Internship_system.DAL.Configuration;
 using Internship_system.DAL.Data;
 using Internship_system.DAL.Data.Entities;
 using Microsoft.AspNetCore.Http;

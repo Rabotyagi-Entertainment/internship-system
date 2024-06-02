@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Internship_system.DAL.Data;
+namespace Internship_system.DAL.Configuration;
 
 public class InterDbContext : IdentityDbContext<User, Role, Guid, IdentityUserClaim<Guid>,
     UserRole, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>> {
