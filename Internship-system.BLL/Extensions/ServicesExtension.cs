@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Telegram.Bot;
 
 namespace Internship_system.BLL.Extensions;
 
@@ -29,7 +30,10 @@ public static class ServicesExtension {
             .AddSignInManager<SignInManager<User>>()
             .AddUserManager<UserManager<User>>()
             .AddRoleManager<RoleManager<Role>>();
-
+        
+        services.AddSingleton<ITelegramBotClient>(sp => 
+            new TelegramBotClient("7109323511:AAH8Lo00dgdlq78PlJsUMceAg8TXUMhM5zQ"));
+        services.AddHostedService<TelegramBotBackgroundService>();
 
 
         services.AddScoped<AuthService>();

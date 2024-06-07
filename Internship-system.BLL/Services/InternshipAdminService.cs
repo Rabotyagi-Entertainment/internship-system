@@ -192,7 +192,8 @@ public class InternshipAdminService
                 var commentDto = new CommentDto
                 {
                     Text = comment.Text,
-                    Author = comment.User.FullName
+                    Author = comment.User.FullName,
+                    RoleType = comment.RoleType
                 };
                 comments.Add(commentDto);
             }

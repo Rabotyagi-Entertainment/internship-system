@@ -7,6 +7,7 @@ public class PracticeDiary {
     public PracticeDiaryType DiaryType { get; set; }
     public DiaryState DiaryState { get; set; }
     public Internship Internship { get; set; }
+    public List<Comment> Comments { get; set; } = new();
     public byte[]? File { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime EditedAt { get; set; }

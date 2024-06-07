@@ -1,3 +1,4 @@
+using Internship_system.BLL.DTOs.InternshipAdmin;
 using internship_system.Common.Enums;
 
 namespace Internship_system.BLL.DTOs.PracticeDiary;
@@ -5,7 +6,11 @@ namespace Internship_system.BLL.DTOs.PracticeDiary;
 public class PracticeDiaryDto {
     public Guid Id { get; set; } = Guid.NewGuid();
     public PracticeDiaryType DiaryType { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DiaryState DiaryState { get; set; }
+    public DateTime CreatedAt { get; set; }
+
+    public List<CommentDto> Comments { get; set; } = new();
+
     /// <summary>
     /// Дальше идет инфа для заполнения дневника(общая для всех дневников)
     /// </summary>

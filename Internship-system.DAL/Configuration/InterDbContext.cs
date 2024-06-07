@@ -13,6 +13,7 @@ public class InterDbContext : IdentityDbContext<User, Role, Guid, IdentityUserCl
     public override DbSet<UserRole> UserRoles { get; set; }
     public DbSet<Student> Students { get; set; }
     public DbSet<StudentInfo> StudentInfos { get; set; }
+    public DbSet<StudentTelegram> StudentTelegrams { get; set; }
     public DbSet<Dean> Deans { get; set; }
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Company> Companies { get; set; }

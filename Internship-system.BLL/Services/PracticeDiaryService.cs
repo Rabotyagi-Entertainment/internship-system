@@ -1,5 +1,6 @@
 using System.Drawing;
 using System.Text.RegularExpressions;
+using Internship_system.BLL.DTOs.InternshipAdmin;
 using Internship_system.BLL.DTOs.PracticeDiary;
 using Internship_system.BLL.Exceptions;
 using internship_system.Common.Enums;
@@ -21,26 +22,46 @@ public class PracticeDiaryService {
         _interDbContext = interDbContext;
     }
 
-    public async Task<List<PracticeDiaryDto>> GetDiaries(Guid userId) {
+    public async Task<List<PracticeDiaryDto>> GetDiaries(Guid? userId, Guid? internshipId) {
         var student = await _interDbContext.Students
             .FirstOrDefaultAsync(s => s.Id == userId);
-        if (student == null)
+        if (student == null && userId != null)
             throw new NotFoundException("Student not found");
+        var internship = await _interDbContext.Internships
+            .Include(internship => internship.Student)
+            .FirstOrDefaultAsync(s => s.Id == internshipId);
+        if (internship == null && internshipId != null)
+            throw new NotFoundException("Internship not found");
         var diaries = await _interDbContext.PracticeDiaries
-            .Where(pd => pd.Internship.Student == student).Include(practiceDiary => practiceDiary.Internship)
-            .ThenInclude(internship => internship.Company)
+            .Where(pd =>
+                (student == null ||
+                 pd.Internship.Student == student)
+                && (internship == null ||
+                    pd.Internship == internship))
+            .Include(practiceDiary => practiceDiary.Internship)
+            .ThenInclude(ip => ip.Company)
+            .Include(practiceDiary => practiceDiary.Comments)
+            .ThenInclude(comment => comment.User)
             .ToListAsync();
 
         return diaries.Select(d => new PracticeDiaryDto {
             Id = d.Id,
             DiaryType = d.DiaryType,
-            StudentFullName = student.FullName,
+            DiaryState = d.DiaryState,
+            CreatedAt = d.CreatedAt,
+            StudentFullName = internship?.Student.FullName,
             CuratorFullName = d.CuratorFullName,
             TaskReportTable = d.TaskReportTable,
             StudentCharacteristics = d.StudentCharacteristics,
             CompanyName = d.Internship.Company.Name,
             WorkName = d.WorkName,
-            PlanTable = d.PlanTable
+            PlanTable = d.PlanTable,
+            Comments = d.Comments
+                .Select(c=> new CommentDto {
+                    Text = c.Text,
+                    Author = c.User.FullName,
+                    RoleType = c.RoleType
+                }).ToList()
         }).ToList();
     }
 

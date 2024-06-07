@@ -3,6 +3,7 @@ using System;
 using Internship_system.DAL.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Internship_system.DAL.Migrations
 {
     [DbContext(typeof(InterDbContext))]
-    partial class InterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240607155514_fix")]
+    partial class fix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -243,25 +246,6 @@ namespace Internship_system.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("StudentInfos");
-                });
-
-            modelBuilder.Entity("Internship_system.DAL.Data.Entities.StudentTelegram", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ChatId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("TgName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("StudentTelegrams");
                 });
 
             modelBuilder.Entity("Internship_system.DAL.Data.Entities.User", b =>

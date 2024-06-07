@@ -17,13 +17,15 @@ public class PracticeDiaryController: Controller {
     }
 
     /// <summary>
-    /// Get my diaries
+    /// Get diaries by params
     /// </summary>
+    /// <remarks>
+    /// userId == null значит берет всех, с internshipId так же
+    /// </remarks>
     [HttpGet]
     [Route("list")]
-    public async Task<List<PracticeDiaryDto>> GetDiaries() {
-        var userId = Guid.Parse(User.Identity.Name);
-        return await _practiceDiaryService.GetDiaries(userId);
+    public async Task<List<PracticeDiaryDto>> GetDiaries(Guid? userId, Guid? internshipId) {
+        return await _practiceDiaryService.GetDiaries(userId, internshipId);
     }
     /// <summary>
     /// Get diary as file
