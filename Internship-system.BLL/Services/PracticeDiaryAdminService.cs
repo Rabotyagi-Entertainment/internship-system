@@ -1,6 +1,7 @@
 using Internship_system.BLL.DTOs.PracticeDiaryAdmin;
 using Internship_system.BLL.Exceptions;
 using internship_system.Common.Enums;
+using Internship_system.DAL.Configuration;
 using Internship_system.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
