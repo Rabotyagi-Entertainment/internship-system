@@ -27,7 +27,8 @@ public class PracticeDiaryService {
         if (student == null)
             throw new NotFoundException("Student not found");
         var diaries = await _interDbContext.PracticeDiaries
-            .Where(pd => pd.Internship.Student == student).Include(practiceDiary => practiceDiary.Internship)
+            .Where(pd => pd.Internship.Student == student)
+            .Include(practiceDiary => practiceDiary.Internship)
             .ThenInclude(internship => internship.Company)
             .ToListAsync();
 
@@ -113,8 +114,8 @@ public class PracticeDiaryService {
             if (paragraph.Text.Contains("Дата_приказа")) {
                 var replace = new StringReplaceTextOptions {
                     NewValue = !diary.OrderDate.HasValue
-                        ? "НЕ ЗАПОЛНЕНО" 
-                        :  diary.OrderDate!.Value.ToShortDateString(),
+                        ? "НЕ ЗАПОЛНЕНО"
+                        : diary.OrderDate!.Value.ToShortDateString(),
                     SearchValue = "Дата_приказа",
                     NewFormatting = new Formatting {
                         Bold = false,
