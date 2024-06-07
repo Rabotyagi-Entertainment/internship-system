@@ -3,11 +3,8 @@ using Internship_system.BLL.DTOs.Internship.Responses;
 using Internship_system.BLL.Exceptions;
 using internship_system.Common.Enums;
 using Internship_system.DAL.Configuration;
-using Internship_system.DAL.Data;
 using Internship_system.DAL.Data.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using CommentDto = Internship_system.BLL.DTOs.InternshipAdmin.CommentDto;
 
 namespace Internship_system.BLL.Services;
 
@@ -16,6 +13,32 @@ public class InternshipService {
 
     public InternshipService(InterDbContext dbContext) {
         _dbContext = dbContext;
+    }
+
+    public async Task<List<InternshipProgress>> GetStudentInternshipProgresses(Guid studentId) {
+        return await _dbContext.InternshipProgresses
+            .Include(progress => progress.Student)
+            .Include(progress => progress.Company)
+            .Include(progress => progress.Comments)
+            .Where(progress => progress.Student.Id == studentId)
+            .ToListAsync();
+    }
+
+    public async Task<List<Internship>> GetStudentInternships(Guid studentId) {
+        return await _dbContext.Internships
+            .Include(internship => internship.Student)
+            .Include(internship => internship.Company)
+            .Include(internship => internship.PracticeDiaries)
+            .Where(internship => internship.Student.Id == studentId)
+            .ToListAsync();
+    }
+
+    public async Task<List<Company>> GetStudentCompanies(Guid studentId) {
+        return await _dbContext.InternshipProgresses
+            .Include(progress => progress.Company)
+            .Where(progress => progress.Student.Id == studentId)
+            .Select(progress => progress.Company)
+            .ToListAsync();
     }
 
     // Где-то выше (или здесь) должна быть проверка на то, что студент - именно студент второго курса 

@@ -1,4 +1,3 @@
-using Internship_system.BLL.DTOs.Internship;
 using Internship_system.BLL.DTOs.Internship.Requests;
 using Internship_system.BLL.Services;
 using internship_system.Common.Enums;
@@ -18,50 +17,70 @@ public class InternshipController : Controller {
         _internshipService = internshipService;
     }
 
+    /// <summary>
+    /// Получить студентом все компании, которые он выбрал для отбора на стажировку 
+    /// </summary>
+    [HttpGet]
+    [Route("company/student")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    public async Task<IActionResult> GetStudentCompanies() {
+        return Ok(await _internshipService.GetStudentCompanies(this.GetUserId()));
+    }
+
+    /// <summary>
+    /// Добавление желаемых компаний из списка партнеров
+    /// </summary>
     [HttpPut]
     [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("company/{companyId:guid}")]
-    [EndpointSummary("Добавление желаемых компаний из списка партнеров")]
     public async Task<IActionResult> AddCompany(Guid companyId, [FromBody] WishlistInternshipBody body) {
         var userId = this.GetUserId();
         var response = await _internshipService.AddDesiredCompanyToInternship(body.ToRequest(userId, companyId));
         return Ok(response);
     }
 
+    /// <summary>
+    /// Создание компании студентом, если её нет в списке компаний-партнёров
+    /// </summary>
     [HttpPost]
     [Route("company/create")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    [EndpointSummary("Создание компании студентом, если её нет в списке компаний-партнёров")]
     public async Task<IActionResult> CreateNonPartnerCompany([FromBody] string name) {
         var userId = this.GetUserId();
         var response = await _internshipService.CreateNonPartnerCompany(new(userId, name));
         return Ok(response);
     }
 
+    /// <summary>
+    /// Изменение статуса компании для стажировки, выбранной студентом
+    /// </summary>
     [HttpPut]
     [Route("company/{companyId:guid}/status")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    [EndpointSummary("Изменение статуса компании для стажировки, выбранной студентом")]
     public async Task<IActionResult> ChangeCompanyStatus(Guid companyId, [FromBody] ProgressStatus status) {
         var userId = this.GetUserId();
         await _internshipService.UpdateCompanyStatus(new(userId, companyId, status));
         return NoContent();
     }
 
+    /// <summary>
+    /// Оставить комментарий к статусу
+    /// </summary>
     [HttpPost]
     [Route("progress/{internshipProgressId:guid}/status")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    [EndpointSummary("Оставить комментарий к статусу")]
     public async Task<IActionResult> LeaveStatusComment(Guid internshipProgressId, [FromBody] StudentLeaveProgressCommentBody body) {
         var userId = this.GetUserId();
         var result = await _internshipService.StudentLeaveProgressComment(new(internshipProgressId, userId, body.Text));
         return Ok(result);
     }
 
+    /// <summary>
+    /// Оставить комментарий к компании
+    /// </summary>
     [HttpPost]
     [Route("progress/diary/{practiceDiaryId:guid}")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    [EndpointSummary("Оставить комментарий к компании")]
     public async Task<IActionResult> LeaveCompanyComment(Guid practiceDiaryId, [FromBody] StudentLeaveProgressCommentBody body) {
         var userId = this.GetUserId();
         var dto = new StudentLeaveDiaryCommentDto(practiceDiaryId, userId, body.Text);
@@ -69,15 +88,38 @@ public class InternshipController : Controller {
         return Ok(result);
     }
 
+    /// <summary>
+    /// Оставить комментарий к компании
+    /// </summary>
     [HttpPatch]
     [Route("progress/{internshipProgressId:guid}/update")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    [EndpointSummary("Оставить комментарий к компании")]
     public async Task<IActionResult> ChangeInternshipStatus(Guid internshipProgressId, [FromBody] UpdateInternshipProgressBody body) {
         var userId = this.GetUserId();
         var dto = new UpdateInternshipProgressDto(internshipProgressId, userId, body.Priority, body.AdditionalInfo);
         var result = await _internshipService.UpdateInternshipProgress(dto);
         return Ok(result);
     }
+
     // Отправка сообщений в бота, как я понимаю, будет происходить автоматически на бэке
+
+    /// <summary>
+    /// Получить студентом все его InternshipProgress 
+    /// </summary>
+    [HttpGet]
+    [Route("progress/student")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    public async Task<IActionResult> GetStudentInternshipProgresses() {
+        return Ok(await _internshipService.GetStudentInternshipProgresses(this.GetUserId()));
+    }
+    
+    /// <summary>
+    /// Получить студентом все его Internship 
+    /// </summary>
+    [HttpGet]
+    [Route("internship/student")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    public async Task<IActionResult> GetStudentInternships() {
+        return Ok(await _internshipService.GetStudentInternships(this.GetUserId()));
+    }
 }
