@@ -159,7 +159,9 @@ public class InternshipAdminService
         result.Position = 0;
         await package.SaveAsAsync(result);
         
-        return result;    }
+        return result;
+        
+    }
 
     public async Task<List<StudentStatusDto>> GetStudentCompanies(Guid userId)
     {

@@ -5,6 +5,7 @@ namespace Internship_system.DAL.Data.Entities;
 public class PracticeDiary {
     public Guid Id { get; set; } = Guid.NewGuid();
     public PracticeDiaryType DiaryType { get; set; }
+    public DiaryState DiaryState { get; set; }
     public Internship Internship { get; set; }
     public byte[]? File { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
