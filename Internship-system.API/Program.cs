@@ -4,6 +4,7 @@ using Internship_system.BLL.Extensions;
 using Internship_system.BLL.Services;
 using Internship_system.Configuration;
 using Serilog;
+using Telegram.Bot;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,5 +57,6 @@ app.UseAuthorization();
 app.UseAuthentication();
 
 app.MapControllers();
-
+/*var tgService = app.Services.GetRequiredService<TgService>();
+await tgService.Execute();*/
 app.Run();

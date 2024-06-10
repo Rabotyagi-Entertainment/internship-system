@@ -32,14 +32,15 @@ public static class ServicesExtension {
             .AddRoleManager<RoleManager<Role>>();
         
         services.AddSingleton<ITelegramBotClient>(sp => 
-            new TelegramBotClient("7109323511:AAH8Lo00dgdlq78PlJsUMceAg8TXUMhM5zQ"));
+            new TelegramBotClient("6895417555:AAE3G2dH6xbic7a66l5eCrnkBnH0ulqfidM"));
         services.AddHostedService<TelegramBotBackgroundService>();
-
+        
 
         services.AddScoped<AuthService>();
         services.AddScoped<PracticeDiaryService>();
         services.AddScoped<InternshipService>();
         services.AddScoped<InternshipAdminService>();
+        services.AddSingleton<TgService>();
 
         return services;
     }

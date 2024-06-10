@@ -58,11 +58,25 @@ public class AuthController: Controller {
     }
 
     /// <summary>
+    /// Send deadline message to tg
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <exception cref="UnauthorizedException"></exception>
+    [HttpPost]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Route("deadline/message")]
+    public async Task SendDeadlineMessage([FromBody] DeadlineMessageDto dto) {
+        if (User.Identity == null || Guid.TryParse(User.Identity.Name, out Guid userId) == false) {
+            throw new UnauthorizedException("User is not authorized");
+        } 
+        await _authService.SendDeadlineMessage(dto);
+    }
+
+    /// <summary>
     /// Get loaded students
     /// </summary>
     /// <exception cref="UnauthorizedException"></exception>
     [HttpGet]
-    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("students/table")]
     public async Task<List<LoadedStudentDto>> GetLoadedStudents() {
         if (User.Identity == null || Guid.TryParse(User.Identity.Name, out Guid userId) == false) {
@@ -70,5 +84,6 @@ public class AuthController: Controller {
         }
         return await _authService.GetLoadedStudents();
     }
+    
     
 }

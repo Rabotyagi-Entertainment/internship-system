@@ -14,6 +14,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using OfficeOpenXml;
+using Telegram.Bot;
+using Telegram.Bot.Types;
+using User = Internship_system.DAL.Data.Entities.User;
 
 namespace Internship_system.BLL.Services;
 
@@ -23,13 +26,34 @@ public class AuthService {
     private readonly SignInManager<User> _signInManager;
     private readonly InterDbContext _interDbContext;
     private readonly IConfiguration _configuration;
+    private readonly ITelegramBotClient _telegramBot;
 
-    public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AuthService> logger, InterDbContext interDbContext, IConfiguration configuration) {
+    public AuthService(UserManager<User> userManager, SignInManager<User> signInManager,
+        ILogger<AuthService> logger, InterDbContext interDbContext, 
+        IConfiguration configuration, ITelegramBotClient telegramBot) {
         _userManager = userManager;
         _signInManager = signInManager;
         _logger = logger;
         _interDbContext = interDbContext;
         _configuration = configuration;
+        _telegramBot = telegramBot;
+    }
+
+    public async Task SendDeadlineMessage(DeadlineMessageDto dto) {
+        var students = _interDbContext.Students
+            .Where(s => s.CourseNumber == dto.CourseNumber);
+        var studentUserNames = await students
+            .Select(s => s.UserName)
+            .ToListAsync();
+
+        var tgStudents = await _interDbContext.StudentTelegrams
+            .Where(stg => studentUserNames
+                .Contains(stg.TgName))
+            .ToListAsync();
+        foreach (var studentTelegram in tgStudents) {
+            await _telegramBot.SendTextMessageAsync(new ChatId($"{studentTelegram.ChatId}"),
+                $"Внимание! нужно сдать заполнить дневник практики до {dto.DeadlineTime} \n {dto.OptionalMessage}");
+        }
     }
 
     public async Task LoadStudents(IFormFile file) {

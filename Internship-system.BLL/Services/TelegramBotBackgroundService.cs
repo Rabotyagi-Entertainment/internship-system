@@ -40,7 +40,7 @@ public class TelegramBotBackgroundService : BackgroundService
             receiverOptions,
             cancellationToken: stoppingToken);
 
-        return Task.CompletedTask;
+        return Task.CompletedTask;  
     }
 
     private async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
