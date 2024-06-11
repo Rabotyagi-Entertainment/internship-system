@@ -1,4 +1,5 @@
 using Internship_system.BLL.DTOs.Internship.Requests;
+using Internship_system.BLL.DTOs.Internship.Responses;
 using Internship_system.BLL.Services;
 using internship_system.Common.Enums;
 using Internship_system.Controllers.Bodies;
@@ -34,7 +35,7 @@ public class InternshipController : Controller {
     [HttpPut]
     [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("company/{companyId:guid}")]
-    public async Task<IActionResult> AddCompany(Guid companyId, [FromBody] WishlistInternshipBody body) {
+    public async Task<ActionResult<Guid>> AddCompany(Guid companyId, [FromBody] WishlistInternshipBody body) {
         var userId = this.GetUserId();
         var response = await _internshipService.AddDesiredCompanyToInternship(body.ToRequest(userId, companyId));
         return Ok(response);
@@ -110,7 +111,7 @@ public class InternshipController : Controller {
     [HttpGet]
     [Route("progress/student")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    public async Task<ActionResult<List<InternshipProgress>>> GetStudentInternshipProgresses() {
+    public async Task<ActionResult<List<InternshipDto>>> GetStudentInternshipProgresses() {
         return Ok(await _internshipService.GetStudentInternshipProgresses(this.GetUserId()));
     }
     
@@ -120,7 +121,7 @@ public class InternshipController : Controller {
     [HttpGet]
     [Route("internship/student")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    public async Task<ActionResult<List<Internship>>> GetStudentInternships() {
+    public async Task<ActionResult<List<InternshipDto>>> GetStudentInternships() {
         return Ok(await _internshipService.GetStudentInternships(this.GetUserId()));
     }
 }

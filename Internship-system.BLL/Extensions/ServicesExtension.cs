@@ -32,7 +32,7 @@ public static class ServicesExtension {
             .AddRoleManager<RoleManager<Role>>();
         
         services.AddSingleton<ITelegramBotClient>(sp => 
-            new TelegramBotClient("6895417555:AAE3G2dH6xbic7a66l5eCrnkBnH0ulqfidM"));
+            new TelegramBotClient(configuration["TgBotToken"]!));
         services.AddHostedService<TelegramBotBackgroundService>();
         
 

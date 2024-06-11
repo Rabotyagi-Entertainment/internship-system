@@ -1,3 +1,4 @@
+using Internship_system.BLL.DTOs.Internship.Responses;
 using Internship_system.BLL.DTOs.InternshipAdmin;
 using Internship_system.BLL.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -11,9 +12,11 @@ namespace Internship_system.Controllers;
 [Route("admin/internship")]
 public class InternshipAdminController : ControllerBase {
     private readonly InternshipAdminService _internshipAdminService;
+    private readonly InternshipService _internshipService;
 
-    public InternshipAdminController(InternshipAdminService internshipAdminService) {
+    public InternshipAdminController(InternshipAdminService internshipAdminService, InternshipService internshipService) {
         _internshipAdminService = internshipAdminService;
+        _internshipService = internshipService;
     }
 
     [HttpGet]
@@ -98,8 +101,8 @@ public class InternshipAdminController : ControllerBase {
     [HttpGet]
     [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("internship/student/{studentId:guid}")]
-    public async Task<IActionResult> GetStudentInternships(Guid studentId) {
-        return Ok(await _internshipAdminService.GetStudentInternships(studentId));
+    public async Task<ActionResult<List<InternshipDto>>> GetStudentInternships(Guid studentId) {
+        return Ok(await _internshipService.GetStudentInternships(studentId));
     }
 
     /// <summary>
@@ -108,7 +111,7 @@ public class InternshipAdminController : ControllerBase {
     [HttpGet]
     [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("progress/student/{studentId:guid}")]
-    public async Task<IActionResult> GetStudentInternshipProgresses(Guid studentId) {
-        return Ok(await _internshipAdminService.GetStudentInternshipProgresses(studentId));
+    public async Task<ActionResult<List<InternshipDto>>> GetStudentInternshipProgresses(Guid studentId) {
+        return Ok(await _internshipService.GetStudentInternshipProgresses(studentId));
     }
 }
