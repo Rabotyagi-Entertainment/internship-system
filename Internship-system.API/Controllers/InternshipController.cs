@@ -3,6 +3,7 @@ using Internship_system.BLL.Services;
 using internship_system.Common.Enums;
 using Internship_system.Controllers.Bodies;
 using Internship_system.Controllers.Extensions;
+using Internship_system.DAL.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -109,7 +110,7 @@ public class InternshipController : Controller {
     [HttpGet]
     [Route("progress/student")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    public async Task<IActionResult> GetStudentInternshipProgresses() {
+    public async Task<ActionResult<List<InternshipProgress>>> GetStudentInternshipProgresses() {
         return Ok(await _internshipService.GetStudentInternshipProgresses(this.GetUserId()));
     }
     
@@ -119,7 +120,7 @@ public class InternshipController : Controller {
     [HttpGet]
     [Route("internship/student")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    public async Task<IActionResult> GetStudentInternships() {
+    public async Task<ActionResult<List<Internship>>> GetStudentInternships() {
         return Ok(await _internshipService.GetStudentInternships(this.GetUserId()));
     }
 }
