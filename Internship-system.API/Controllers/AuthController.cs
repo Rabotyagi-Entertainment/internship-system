@@ -79,9 +79,6 @@ public class AuthController: Controller {
     [HttpGet]
     [Route("students/table")]
     public async Task<List<LoadedStudentDto>> GetLoadedStudents() {
-        if (User.Identity == null || Guid.TryParse(User.Identity.Name, out Guid userId) == false) {
-            throw new UnauthorizedException("User is not authorized");
-        }
         return await _authService.GetLoadedStudents();
     }
     
