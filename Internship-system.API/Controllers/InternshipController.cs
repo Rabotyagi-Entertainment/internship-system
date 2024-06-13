@@ -4,7 +4,6 @@ using Internship_system.BLL.Services;
 using internship_system.Common.Enums;
 using Internship_system.Controllers.Bodies;
 using Internship_system.Controllers.Extensions;
-using Internship_system.DAL.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,7 +34,7 @@ public class InternshipController : Controller {
     [HttpPut]
     [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("company/{companyId:guid}")]
-    public async Task<ActionResult<Guid>> AddCompany(Guid companyId, [FromBody] WishlistInternshipBody body) {
+    public async Task<ActionResult<Guid>> AddCompanyToProgress(Guid companyId, [FromBody] WishlistInternshipBody body) {
         var userId = this.GetUserId();
         var response = await _internshipService.AddDesiredCompanyToProgress(body.ToRequest(userId, companyId));
         return Ok(response);
@@ -47,10 +46,22 @@ public class InternshipController : Controller {
     [HttpDelete]
     [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("company/{companyId:guid}")]
-    public async Task<IActionResult> DeleteCompany(Guid companyId) {
+    public async Task<IActionResult> DeleteCompanyFromProgress(Guid companyId) {
         var userId = this.GetUserId();
         await _internshipService.DeleteDesiredCompanyFromProgress(userId, companyId);
         return NoContent();
+    }
+
+    /// <summary>
+    /// Изменение компаний по списку id компаний
+    /// </summary>
+    [HttpPut]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Route("company/change")]
+    public async Task<IActionResult> UpdateDesiredCompaniesProgress([FromQuery] List<Guid> companiesIds) {
+        var userId = this.GetUserId();
+        var newProgresses = await _internshipService.UpdateDesiredCompaniesProgress(userId, companiesIds);
+        return Ok(newProgresses);
     }
 
     /// <summary>
