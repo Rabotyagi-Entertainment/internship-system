@@ -65,7 +65,7 @@ public class InternshipService {
                     DiaryType = d.DiaryType,
                     DiaryState = d.DiaryState,
                     CreatedAt = d.CreatedAt,
-                    StudentFullName = i?.Student.FullName,
+                    StudentFullName = i.Student.FullName,
                     CuratorFullName = d.CuratorFullName,
                     TaskReportTable = d.TaskReportTable,
                     StudentCharacteristics = d.StudentCharacteristics,
@@ -92,7 +92,6 @@ public class InternshipService {
             .ToListAsync();
     }
 
-    // Где-то выше (или здесь) должна быть проверка на то, что студент - именно студент второго курса 
     public async Task<Guid> AddDesiredCompanyToInternship(InternshipCompanyDto dto) {
         var student = await _dbContext.Students.FindAsync(dto.StudentId) ??
                       throw new NotFoundException($"User with id {dto.StudentId} not found");
@@ -112,6 +111,13 @@ public class InternshipService {
         return internshipProgress.Id;
     }
 
+    public async Task DeleteDesiredCompanyToInternship(Guid companyId) {
+        var company = await _dbContext.Companies.FindAsync(companyId) ??
+                      throw new NotFoundException($"Company with id {companyId} not found");
+        _dbContext.Companies.Remove(company);
+        await _dbContext.SaveChangesAsync();
+    }
+
     public async Task<CompanyDto> CreateNonPartnerCompany(CreateCustomCompanyDto request) {
         var company = new Company {
             Name = request.Name,
@@ -126,8 +132,8 @@ public class InternshipService {
     public async Task UpdateCompanyStatus(UpdateCompanyStatusDto dto) {
         var internshipProgress = await _dbContext.InternshipProgresses
                                      .Where(ip => ip.Student.Id == dto.StudentId && ip.Company.Id == dto.CompanyId)
-                                     .FirstOrDefaultAsync()
-                                 ?? throw new NotFoundException(
+                                     .FirstOrDefaultAsync() ??
+                                 throw new NotFoundException(
                                      $"Internship Progresses for company id '{dto.CompanyId}' and user id '{dto.StudentId}' not found");
 
 

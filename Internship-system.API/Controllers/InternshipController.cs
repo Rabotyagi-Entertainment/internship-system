@@ -42,6 +42,17 @@ public class InternshipController : Controller {
     }
 
     /// <summary>
+    /// Удаление нежеланных компаний из списка партнеров
+    /// </summary>
+    [HttpDelete]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Route("company/{companyId:guid}")]
+    public async Task<IActionResult> DeleteCompany(Guid companyId) {
+        await _internshipService.DeleteDesiredCompanyToInternship(companyId);
+        return NoContent();
+    }
+
+    /// <summary>
     /// Создание компании студентом, если её нет в списке компаний-партнёров
     /// </summary>
     [HttpPost]
@@ -114,7 +125,7 @@ public class InternshipController : Controller {
     public async Task<ActionResult<List<InternshipDto>>> GetStudentInternshipProgresses() {
         return Ok(await _internshipService.GetStudentInternshipProgresses(this.GetUserId()));
     }
-    
+
     /// <summary>
     /// Получить студентом все его Internship 
     /// </summary>
