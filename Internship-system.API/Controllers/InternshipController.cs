@@ -37,7 +37,7 @@ public class InternshipController : Controller {
     [Route("company/{companyId:guid}")]
     public async Task<ActionResult<Guid>> AddCompany(Guid companyId, [FromBody] WishlistInternshipBody body) {
         var userId = this.GetUserId();
-        var response = await _internshipService.AddDesiredCompanyToInternship(body.ToRequest(userId, companyId));
+        var response = await _internshipService.AddDesiredCompanyToProgress(body.ToRequest(userId, companyId));
         return Ok(response);
     }
 
@@ -48,7 +48,8 @@ public class InternshipController : Controller {
     [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("company/{companyId:guid}")]
     public async Task<IActionResult> DeleteCompany(Guid companyId) {
-        await _internshipService.DeleteDesiredCompanyToInternship(companyId);
+        var userId = this.GetUserId();
+        await _internshipService.DeleteDesiredCompanyFromProgress(userId, companyId);
         return NoContent();
     }
 

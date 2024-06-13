@@ -20,7 +20,7 @@ public class InternshipService {
     public async Task<List<InternshipProgressDto>> GetStudentInternshipProgresses(Guid studentId) {
         var student = await _dbContext.Students.FindAsync(studentId) ??
                       throw new NotFoundException($"User with id {studentId} not found");
-        var internshipProgresses =  await _dbContext.InternshipProgresses
+        var internshipProgresses = await _dbContext.InternshipProgresses
             .Include(progress => progress.Student)
             .Include(progress => progress.Company)
             .Include(progress => progress.Comments)
@@ -36,7 +36,7 @@ public class InternshipService {
                 AdditionalInfo = ip.AdditionalInfo,
                 CreatedAt = ip.CreatedAt,
                 EditedAt = ip.EditedAt,
-                Comments = ip.Comments.Select(c=> new CommentDto {
+                Comments = ip.Comments.Select(c => new CommentDto {
                     Text = c.Text,
                     Author = c.User.FullName,
                     RoleType = c.RoleType
@@ -47,8 +47,8 @@ public class InternshipService {
     public async Task<List<InternshipDto>> GetStudentInternships(Guid studentId) {
         var student = await _dbContext.Students.FindAsync(studentId) ??
                       throw new NotFoundException($"User with id {studentId} not found");
-        
-        var internships =  await _dbContext.Internships
+
+        var internships = await _dbContext.Internships
             .Include(internship => internship.Student)
             .Include(internship => internship.Company)
             .Include(internship => internship.PracticeDiaries)
@@ -73,7 +73,7 @@ public class InternshipService {
                     WorkName = d.WorkName,
                     PlanTable = d.PlanTable,
                     Comments = d.Comments
-                        .Select(c=> new CommentDto {
+                        .Select(c => new CommentDto {
                             Text = c.Text,
                             Author = c.User.FullName,
                             RoleType = c.RoleType
@@ -92,7 +92,7 @@ public class InternshipService {
             .ToListAsync();
     }
 
-    public async Task<Guid> AddDesiredCompanyToInternship(InternshipCompanyDto dto) {
+    public async Task<Guid> AddDesiredCompanyToProgress(InternshipCompanyDto dto) {
         var student = await _dbContext.Students.FindAsync(dto.StudentId) ??
                       throw new NotFoundException($"User with id {dto.StudentId} not found");
         var company = await _dbContext.Companies.FindAsync(dto.CompanyId) ??
@@ -111,11 +111,10 @@ public class InternshipService {
         return internshipProgress.Id;
     }
 
-    public async Task DeleteDesiredCompanyToInternship(Guid companyId) {
-        var company = await _dbContext.Companies.FindAsync(companyId) ??
-                      throw new NotFoundException($"Company with id {companyId} not found");
-        _dbContext.Companies.Remove(company);
-        await _dbContext.SaveChangesAsync();
+    public async Task DeleteDesiredCompanyFromProgress(Guid studentId, Guid companyId) {
+        await _dbContext.InternshipProgresses.Where(
+            progress => progress.Student.Id == studentId && progress.Company.Id == companyId
+        ).ExecuteDeleteAsync();
     }
 
     public async Task<CompanyDto> CreateNonPartnerCompany(CreateCustomCompanyDto request) {
