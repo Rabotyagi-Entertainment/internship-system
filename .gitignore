@@ -6,3 +6,5 @@ riderModule.iml
 .idea
 *.log
 logfile
+
+/Internship-system.API/docker-compose.yaml

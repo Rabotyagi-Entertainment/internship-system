@@ -75,38 +75,43 @@ public class InternshipService {
         await _dbContext.InternshipProgresses.RemoveProgress(studentId, companyId);
     }
 
-    public async Task<IEnumerable<InternshipProgressDto>> UpdateDesiredCompaniesProgress(Guid studentId, List<Guid> companiesIds) {
-        var currentIds = (await _dbContext.InternshipProgresses
-                .Where(progress => progress.Student.Id == studentId && companiesIds.Contains(progress.Company.Id))
-                .Select(progress => progress.Id)
+    public async Task<IEnumerable<InternshipProgressDto>> UpdateDesiredCompaniesProgress(Guid studentId, List<UpdateInternshipProgressDto> companiesUpdates) {
+        var companiesIds = companiesUpdates.Select(cu => cu.CompanyId).ToHashSet();
+
+        var currentCompaniesIds = (await _dbContext.InternshipProgresses
+                .Include(progress => progress.Company)
+                .Where(progress => progress.Student.Id == studentId)
+                .Select(progress => progress.Company.Id)
                 .ToListAsync())
             .ToHashSet();
 
-        var companiesToAdd = companiesIds.Except(currentIds).ToHashSet();
-        var companiesToRemove = currentIds.Except(companiesIds).ToHashSet();
-        var companiesToChange = currentIds.Intersect(companiesIds).ToHashSet();
+        var companiesToAdd = companiesUpdates.ExceptBy(currentCompaniesIds, dto => dto.CompanyId);
+        var companiesToRemove = currentCompaniesIds.Except(companiesIds);
+        var companiesToChange = companiesUpdates.IntersectBy(currentCompaniesIds, dto => dto.CompanyId).ToHashSet();
 
         var newProgresses = new List<InternshipProgress>();
 
         var student = await _dbContext.Students.FindAsync(studentId) ??
                       throw new NotFoundException($"User with id {studentId} not found");
 
-        for (var i = 0; i < companiesIds.Count; i++) {
-            if (companiesToAdd.Contains(companiesIds[i])) {
-                var company = await _dbContext.Companies.FindAsync(companiesIds[i]) ??
-                              throw new NotFoundException($"Company with id {companiesIds[i]} not found");
-                var progress = _dbContext.InternshipProgresses.CreateAndAttachDefaultProgress(student, company, i);
-                newProgresses.Add(progress);
-            }
-            else if (companiesToRemove.Contains(companiesIds[i])) {
-                await _dbContext.InternshipProgresses.RemoveProgress(studentId, companiesIds[i]);
-            }
-            else if (companiesToChange.Contains(companiesIds[i])) {
-                var progress = await _dbContext.InternshipProgresses.GetProgressWithAllInclusionsOrThrow(studentId, companiesIds[i]);
-                progress.Priority = i;
-                _dbContext.InternshipProgresses.Update(progress);
-                newProgresses.Add(progress);
-            }
+        foreach (var companyId in companiesToRemove) {
+            await _dbContext.InternshipProgresses.RemoveProgress(studentId, companyId);
+        }
+
+        foreach (var dto in companiesToAdd) {
+            var company = await _dbContext.Companies.FindAsync(dto.CompanyId) ??
+                          throw new NotFoundException($"Company with id {dto.CompanyId} not found");
+            var progress = _dbContext.InternshipProgresses.CreateAndAttachDefaultProgress(student, company, dto);
+            newProgresses.Add(progress);
+        }
+
+        foreach (var dto in companiesToChange) {
+            var progress = await _dbContext.InternshipProgresses.GetProgressWithAllInclusionsOrThrow(studentId, dto.CompanyId);
+            progress.Priority = dto.Priority ?? progress.Priority;
+            progress.ProgressStatus = dto.Status ?? ProgressStatus.Default;
+            progress.AdditionalInfo = dto.AdditionalInfo;
+            _dbContext.InternshipProgresses.Update(progress);
+            newProgresses.Add(progress);
         }
 
         await _dbContext.SaveChangesAsync();
@@ -126,12 +131,7 @@ public class InternshipService {
     }
 
     public async Task UpdateCompanyStatus(UpdateCompanyStatusDto dto) {
-        var internshipProgress = await _dbContext.InternshipProgresses
-                                     .Where(ip => ip.Student.Id == dto.StudentId && ip.Company.Id == dto.CompanyId)
-                                     .FirstOrDefaultAsync() ??
-                                 throw new NotFoundException(
-                                     $"Internship Progresses for company id '{dto.CompanyId}' and user id '{dto.StudentId}' not found");
-
+        var internshipProgress = await _dbContext.InternshipProgresses.GetProgressOrThrow(dto.StudentId, dto.CompanyId);
 
         internshipProgress.ProgressStatus = dto.NewStatus;
 
@@ -153,9 +153,7 @@ public class InternshipService {
     }
 
     public async Task<StudentCommentDto> StudentLeaveProgressComment(StudentLeaveProgressCommentDto dto) {
-        var internshipProgress = await _dbContext.InternshipProgresses.FindAsync(dto.InternshipProgressId)
-                                 ?? throw new NotFoundException(
-                                     $"Internship Progresses with id {dto.InternshipProgressId} not found");
+        var internshipProgress = await _dbContext.InternshipProgresses.GetProgressOrThrow(dto.StudentId, dto.CompanyId);
         var student = await _dbContext.Students.FindAsync(dto.StudentId) ??
                       throw new NotFoundException($"User with id {dto.StudentId} not found");
 
@@ -191,13 +189,13 @@ public class InternshipService {
         return new(null, practiceDiary.Id, student.Id, comment.RoleType, comment.Text);
     }
 
-    public async Task<InternshipProgress> UpdateInternshipProgress(UpdateInternshipProgressDto dto) {
-        var internshipProgress = await _dbContext.InternshipProgresses.FindAsync(dto.InternshipProgressId)
-                                 ?? throw new NotFoundException($"Internship Progress with id {dto.InternshipProgressId} not found");
+    public async Task<InternshipProgress> UpdateInternshipProgress(Guid studentId, UpdateInternshipProgressDto dto) {
+        var internshipProgress = await _dbContext.InternshipProgresses.GetProgressOrThrow(studentId, dto.CompanyId);
 
         if (dto.Priority == null && dto.AdditionalInfo == null) throw new BadRequestException("There must be at least one change");
 
         internshipProgress.Priority = dto.Priority ?? internshipProgress.Priority;
+        internshipProgress.ProgressStatus = dto.Status ?? internshipProgress.ProgressStatus;
         internshipProgress.AdditionalInfo = dto.AdditionalInfo ?? internshipProgress.AdditionalInfo;
         internshipProgress.EditedAt = DateTime.UtcNow;
 

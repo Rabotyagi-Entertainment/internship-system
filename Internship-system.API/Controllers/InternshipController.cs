@@ -58,9 +58,12 @@ public class InternshipController : Controller {
     [HttpPut]
     [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("company/change")]
-    public async Task<IActionResult> UpdateDesiredCompaniesProgress([FromQuery] List<Guid> companiesIds) {
+    public async Task<IActionResult> UpdateDesiredCompaniesProgress([FromBody] List<UpdateInternshipProgressWithCompanyIdBody> companiesUpdates) {
         var userId = this.GetUserId();
-        var newProgresses = await _internshipService.UpdateDesiredCompaniesProgress(userId, companiesIds);
+        var dtos = companiesUpdates
+            .Select(body => new UpdateInternshipProgressDto(body.CompanyId, body.Priority, body.Status, body.AdditionalInfo))
+            .ToList();
+        var newProgresses = await _internshipService.UpdateDesiredCompaniesProgress(userId, dtos);
         return Ok(newProgresses);
     }
 
@@ -82,7 +85,7 @@ public class InternshipController : Controller {
     [HttpPut]
     [Route("company/{companyId:guid}/status")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    public async Task<IActionResult> ChangeCompanyStatus(Guid companyId, [FromBody] ProgressStatus status) {
+    public async Task<IActionResult> ChangeCompanyStatus(Guid companyId, [FromQuery] ProgressStatus status) {
         var userId = this.GetUserId();
         await _internshipService.UpdateCompanyStatus(new(userId, companyId, status));
         return NoContent();
@@ -92,21 +95,21 @@ public class InternshipController : Controller {
     /// Оставить комментарий к статусу
     /// </summary>
     [HttpPost]
-    [Route("progress/{internshipProgressId:guid}/status")]
+    [Route("progress/{companyId:guid}/status")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    public async Task<IActionResult> LeaveStatusComment(Guid internshipProgressId, [FromBody] StudentLeaveProgressCommentBody body) {
+    public async Task<IActionResult> LeaveStatusComment(Guid companyId, [FromBody] StudentLeaveProgressCommentBody body) {
         var userId = this.GetUserId();
-        var result = await _internshipService.StudentLeaveProgressComment(new(internshipProgressId, userId, body.Text));
+        var result = await _internshipService.StudentLeaveProgressComment(new(userId, companyId, body.Text));
         return Ok(result);
     }
 
     /// <summary>
-    /// Оставить комментарий к компании
+    /// Оставить комментарий к дневнику практики
     /// </summary>
     [HttpPost]
     [Route("progress/diary/{practiceDiaryId:guid}")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    public async Task<IActionResult> LeaveCompanyComment(Guid practiceDiaryId, [FromBody] StudentLeaveProgressCommentBody body) {
+    public async Task<IActionResult> LeavePracticeDiaryComment(Guid practiceDiaryId, [FromBody] StudentLeaveProgressCommentBody body) {
         var userId = this.GetUserId();
         var dto = new StudentLeaveDiaryCommentDto(practiceDiaryId, userId, body.Text);
         var result = await _internshipService.StudentLeavePracticeDiaryComment(dto);
@@ -114,19 +117,17 @@ public class InternshipController : Controller {
     }
 
     /// <summary>
-    /// Оставить комментарий к компании
+    /// Обновить информацию о прогрессе стажировки
     /// </summary>
     [HttpPatch]
-    [Route("progress/{internshipProgressId:guid}/update")]
+    [Route("progress/{companyId:guid}/update")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    public async Task<IActionResult> ChangeInternshipStatus(Guid internshipProgressId, [FromBody] UpdateInternshipProgressBody body) {
+    public async Task<IActionResult> ChangeInternshipStatus(Guid companyId, [FromBody] UpdateInternshipProgressBody body) {
         var userId = this.GetUserId();
-        var dto = new UpdateInternshipProgressDto(internshipProgressId, userId, body.Priority, body.AdditionalInfo);
-        var result = await _internshipService.UpdateInternshipProgress(dto);
+        var dto = new UpdateInternshipProgressDto(companyId, body.Priority, body.Status, body.AdditionalInfo);
+        var result = await _internshipService.UpdateInternshipProgress(userId, dto);
         return Ok(result);
     }
-
-    // Отправка сообщений в бота, как я понимаю, будет происходить автоматически на бэке
 
     /// <summary>
     /// Получить студентом все его InternshipProgress 

@@ -1,3 +1,4 @@
+using Internship_system.BLL.DTOs.Internship.Requests;
 using Internship_system.BLL.DTOs.Internship.Responses;
 using Internship_system.BLL.DTOs.InternshipAdmin;
 using Internship_system.BLL.Exceptions;
@@ -29,17 +30,25 @@ public static class InternshipProgressesExtensions {
         this DbSet<InternshipProgress> dbSet,
         Student student,
         Company company,
-        int priority
+        UpdateInternshipProgressDto dto
     ) {
         var progress = new InternshipProgress {
             Student = student,
             Company = company,
-            Priority = priority,
-            ProgressStatus = ProgressStatus.Default
+            Priority = dto.Priority,
+            ProgressStatus = dto.Status ?? ProgressStatus.Default,
+            AdditionalInfo = dto.AdditionalInfo
         };
         dbSet.Add(progress);
 
         return progress;
+    }
+
+    public static async Task<InternshipProgress> GetProgressOrThrow(this DbSet<InternshipProgress> dbSet, Guid studentId, Guid companyId) {
+        return await dbSet
+                   .Where(ip => ip.Student.Id == studentId && ip.Company.Id == companyId)
+                   .FirstOrDefaultAsync()
+               ?? throw new NotFoundException($"Internship Progresses for company id '{companyId}' and user id '{studentId}' not found");
     }
 
     public static async Task<InternshipProgress> GetProgressWithAllInclusionsOrThrow(this DbSet<InternshipProgress> dbSet, Guid studentId, Guid companyId) {
