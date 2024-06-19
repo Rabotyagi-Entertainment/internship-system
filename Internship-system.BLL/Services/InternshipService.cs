@@ -140,7 +140,7 @@ public class InternshipService {
                           throw new NotFoundException($"User with id {dto.StudentId} not found");
             var company = await _dbContext.Companies.FindAsync(dto.CompanyId) ??
                           throw new NotFoundException($"Company with id {dto.CompanyId} not found");
-            _dbContext.Add(new Internship {
+            _dbContext.Internships.Add(new() {
                 Student = student,
                 Company = company,
                 PracticeDiaries = [],
@@ -148,7 +148,7 @@ public class InternshipService {
             });
         }
 
-        _dbContext.Update(internshipProgress);
+        _dbContext.InternshipProgresses.Update(internshipProgress);
         await _dbContext.SaveChangesAsync();
     }
 

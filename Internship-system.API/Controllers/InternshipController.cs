@@ -4,6 +4,7 @@ using Internship_system.BLL.Services;
 using internship_system.Common.Enums;
 using Internship_system.Controllers.Bodies;
 using Internship_system.Controllers.Extensions;
+using Internship_system.DAL.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,7 +25,7 @@ public class InternshipController : Controller {
     [HttpGet]
     [Route("company/student")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    public async Task<IActionResult> GetStudentCompanies() {
+    public async Task<ActionResult<List<Company>>> GetStudentCompanies() {
         return Ok(await _internshipService.GetStudentCompanies(this.GetUserId()));
     }
 
@@ -58,7 +59,9 @@ public class InternshipController : Controller {
     [HttpPut]
     [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("company/change")]
-    public async Task<IActionResult> UpdateDesiredCompaniesProgress([FromBody] List<UpdateInternshipProgressWithCompanyIdBody> companiesUpdates) {
+    public async Task<ActionResult<IEnumerable<InternshipProgressDto>>> UpdateDesiredCompaniesProgress(
+        [FromBody] List<UpdateInternshipProgressWithCompanyIdBody> companiesUpdates
+    ) {
         var userId = this.GetUserId();
         var dtos = companiesUpdates
             .Select(body => new UpdateInternshipProgressDto(body.CompanyId, body.Priority, body.Status, body.AdditionalInfo))
@@ -73,7 +76,7 @@ public class InternshipController : Controller {
     [HttpPost]
     [Route("company/create")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    public async Task<IActionResult> CreateNonPartnerCompany([FromBody] string name) {
+    public async Task<ActionResult<CompanyDto>> CreateNonPartnerCompany([FromBody] string name) {
         var userId = this.GetUserId();
         var response = await _internshipService.CreateNonPartnerCompany(new(userId, name));
         return Ok(response);
@@ -87,7 +90,7 @@ public class InternshipController : Controller {
     [Authorize(AuthenticationSchemes = "Bearer")]
     public async Task<IActionResult> ChangeCompanyStatus(Guid companyId, [FromQuery] ProgressStatus status) {
         var userId = this.GetUserId();
-        await _internshipService.UpdateCompanyStatus(new(userId, companyId, status));
+        await _internshipService.UpdateCompanyStatus(new(StudentId: userId, CompanyId: companyId, NewStatus: status));
         return NoContent();
     }
 
@@ -97,9 +100,9 @@ public class InternshipController : Controller {
     [HttpPost]
     [Route("progress/{companyId:guid}/status")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    public async Task<IActionResult> LeaveStatusComment(Guid companyId, [FromBody] StudentLeaveProgressCommentBody body) {
+    public async Task<ActionResult<StudentCommentDto>> LeaveStatusComment(Guid companyId, [FromBody] StudentLeaveProgressCommentBody body) {
         var userId = this.GetUserId();
-        var result = await _internshipService.StudentLeaveProgressComment(new(userId, companyId, body.Text));
+        var result = await _internshipService.StudentLeaveProgressComment(new(StudentId: userId, CompanyId: companyId, Text: body.Text));
         return Ok(result);
     }
 
@@ -109,7 +112,7 @@ public class InternshipController : Controller {
     [HttpPost]
     [Route("progress/diary/{practiceDiaryId:guid}")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    public async Task<IActionResult> LeavePracticeDiaryComment(Guid practiceDiaryId, [FromBody] StudentLeaveProgressCommentBody body) {
+    public async Task<ActionResult<StudentCommentDto>> LeavePracticeDiaryComment(Guid practiceDiaryId, [FromBody] StudentLeaveProgressCommentBody body) {
         var userId = this.GetUserId();
         var dto = new StudentLeaveDiaryCommentDto(practiceDiaryId, userId, body.Text);
         var result = await _internshipService.StudentLeavePracticeDiaryComment(dto);
@@ -122,7 +125,7 @@ public class InternshipController : Controller {
     [HttpPatch]
     [Route("progress/{companyId:guid}/update")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    public async Task<IActionResult> ChangeInternshipStatus(Guid companyId, [FromBody] UpdateInternshipProgressBody body) {
+    public async Task<ActionResult<InternshipProgress>> ChangeInternshipStatus(Guid companyId, [FromBody] UpdateInternshipProgressBody body) {
         var userId = this.GetUserId();
         var dto = new UpdateInternshipProgressDto(companyId, body.Priority, body.Status, body.AdditionalInfo);
         var result = await _internshipService.UpdateInternshipProgress(userId, dto);
