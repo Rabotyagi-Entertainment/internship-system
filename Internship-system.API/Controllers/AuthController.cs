@@ -1,4 +1,5 @@
 using Internship_system.BLL.DTOs;
+using Internship_system.BLL.DTOs.Internship.Responses;
 using Internship_system.BLL.Exceptions;
 using Internship_system.BLL.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -20,8 +21,12 @@ public class AuthController: Controller {
     /// </summary>
     [HttpPost]
     [Route("register")]
-    public async Task<ActionResult<string>> Register([FromBody] AccountRegisterDto accountRegisterDto) {
-        return Ok(await _authService.RegisterAsync(accountRegisterDto));
+    public async Task<ActionResult<JwtResponseDto>> Register([FromBody] AccountRegisterDto accountRegisterDto) {
+        var jwt = await _authService.RegisterAsync(accountRegisterDto);
+        var response = new JwtResponseDto {
+            JWT = jwt
+        };
+        return Ok(response);
     }
 
     /// <summary>
@@ -29,8 +34,12 @@ public class AuthController: Controller {
     /// </summary>
     [HttpPost]
     [Route("login")]
-    public async Task<ActionResult<string>> Login([FromBody] AccountLoginDto accountLoginDto) {
-        return Ok(await _authService.LoginAsync(accountLoginDto));
+    public async Task<ActionResult<JwtResponseDto>> Login([FromBody] AccountLoginDto accountLoginDto) {
+        var jwt = await _authService.LoginAsync(accountLoginDto);
+        var response = new JwtResponseDto {
+            JWT = jwt
+        };
+        return Ok(response);
     }
     [HttpGet]
     [Authorize(AuthenticationSchemes = "Bearer")]
