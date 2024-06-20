@@ -1,6 +1,9 @@
+using Internship_system.BLL.DTOs.InternshipAdmin;
 using Internship_system.BLL.DTOs.PracticeDiary;
 using Internship_system.BLL.Services;
 using internship_system.Common.Enums;
+using Internship_system.Controllers.Bodies;
+using Internship_system.Controllers.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -55,6 +58,20 @@ public class PracticeDiaryController : Controller {
     public async Task EditGeneralInfo(Guid diaryId, EditGeneralInfoDto dto) {
         await _practiceDiaryService.EditGeneralInfo(diaryId, dto);
     }
+
+    /// <summary>
+    /// Leave a comment for practice diary by id
+    /// </summary>
+    [HttpPost]
+    [Route("{diaryId:guid}/comment")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    public async Task<ActionResult<CommentDto>> LeavePracticeDiaryComment(Guid diaryId, [FromBody] LeavePracticeDiaryCommentBody body) {
+        var userId = this.GetUserId();
+        var dto = new LeavePracticeDiaryCommentDto(UserId: userId, DiaryId: diaryId, body.Text);
+        var response = await _practiceDiaryService.LeavePracticeDiaryComment(dto);
+        return Ok(response);
+    }
+    
     /// <summary>
     /// Edit additional information in diary
     /// </summary>

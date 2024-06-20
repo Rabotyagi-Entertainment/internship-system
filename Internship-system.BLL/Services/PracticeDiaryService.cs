@@ -54,7 +54,7 @@ public class PracticeDiaryService {
             WorkName = d.WorkName,
             PlanTable = d.PlanTable,
             Comments = d.Comments
-                .Select(c=> new CommentDto {
+                .Select(c => new CommentDto {
                     Text = c.Text,
                     Author = c.User.FullName,
                     RoleType = c.RoleType
@@ -131,8 +131,8 @@ public class PracticeDiaryService {
             if (paragraph.Text.Contains("Дата_приказа")) {
                 var replace = new StringReplaceTextOptions {
                     NewValue = !diary.OrderDate.HasValue
-                        ? "НЕ ЗАПОЛНЕНО" 
-                        :  diary.OrderDate!.Value.ToShortDateString(),
+                        ? "НЕ ЗАПОЛНЕНО"
+                        : diary.OrderDate!.Value.ToShortDateString(),
                     SearchValue = "Дата_приказа",
                     NewFormatting = new Formatting {
                         Bold = false,
@@ -276,5 +276,29 @@ public class PracticeDiaryService {
         diary.TaskReportTable = result;
         _interDbContext.Update(diary);
         await _interDbContext.SaveChangesAsync();
+    }
+
+    public async Task<CommentDto> LeavePracticeDiaryComment(LeavePracticeDiaryCommentDto dto) {
+        var practiceDiary = await _interDbContext.PracticeDiaries.FirstOrDefaultAsync(pd => pd.Id == dto.DiaryId) ??
+                            throw new NotFoundException($"Can't find practice diary with id {dto.DiaryId}");
+        var user = await _interDbContext.Users.FindAsync(dto.UserId) ??
+                   throw new NotFoundException($"User with id {dto.UserId} not found");
+
+        var comment = new Comment {
+            PracticeDiary = practiceDiary,
+            InternshipProgress = null,
+            User = user,
+            RoleType = RoleType.Student,
+            Text = dto.Text
+        };
+        _interDbContext.Comments.Add(comment);
+
+        await _interDbContext.SaveChangesAsync();
+
+        return new() {
+            Text = comment.Text,
+            Author = user.FullName,
+            RoleType = comment.RoleType
+        };
     }
 }

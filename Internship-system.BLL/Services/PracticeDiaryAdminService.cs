@@ -79,9 +79,7 @@ public class PracticeDiaryAdminService {
     }
 
     public async Task<CommentDto> LeavePracticeDiaryComment(LeavePracticeDiaryCommentDto dto) {
-        var practiceDiary = await _dbContext
-                                .PracticeDiaries
-                                .FirstOrDefaultAsync(pd => pd.Id == dto.DiaryId) ??
+        var practiceDiary = await _dbContext.PracticeDiaries.FirstOrDefaultAsync(pd => pd.Id == dto.DiaryId) ??
                             throw new NotFoundException($"Can't find practice diary with id {dto.DiaryId}");
         var user = await _dbContext.Users.FindAsync(dto.UserId) ??
                    throw new NotFoundException($"User with id {dto.UserId} not found");
