@@ -79,6 +79,11 @@ public class PracticeDiaryService {
             : "../internship-system.Common/Src/PracticeDiary_CourseWork.docx";
         _logger.LogInformation($"////////////{filePath} ///////////\n");
         _logger.LogInformation($"////////////{Directory.GetCurrentDirectory()} ///////////\n");
+        var directories = Directory.GetDirectories(Directory.GetCurrentDirectory());
+        foreach (var dir in directories)
+        {
+            _logger.LogInformation($"sub dirs: {dir}");
+        }
         var byteArray = File.OpenRead(filePath);
         var sourceDoc = DocX.Load(byteArray);
         foreach (var paragraph in sourceDoc.Paragraphs) {
