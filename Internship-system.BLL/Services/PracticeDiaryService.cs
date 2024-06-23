@@ -75,8 +75,8 @@ public class PracticeDiaryService {
         if (diary == null)
             throw new NotFoundException("Diary not found");
         var filePath = diary.DiaryType == PracticeDiaryType.Default
-            ? "../internship-system.Common/Src/PracticeDiary_Default.docx"
-            : "../internship-system.Common/Src/PracticeDiary_CourseWork.docx";
+            ? "Src/PracticeDiary_Default.docx"
+            : "Src/PracticeDiary_CourseWork.docx";
         _logger.LogInformation($"////////////{filePath} ///////////\n");
         _logger.LogInformation($"////////////{Directory.GetCurrentDirectory()} ///////////\n");
         var directories = Directory.GetDirectories(Directory.GetCurrentDirectory());
