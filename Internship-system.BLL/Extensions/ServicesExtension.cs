@@ -34,10 +34,10 @@ public static class ServicesExtension {
         services.AddSingleton<ITelegramBotClient>(sp => 
             new TelegramBotClient(configuration["TgBotToken"]!));
         services.AddHostedService<TelegramBotBackgroundService>();
-        
 
         services.AddScoped<AuthService>();
         services.AddScoped<PracticeDiaryService>();
+        services.AddScoped<PracticeDiaryAdminService>();
         services.AddScoped<InternshipService>();
         services.AddScoped<InternshipAdminService>();
         services.AddSingleton<TgService>();

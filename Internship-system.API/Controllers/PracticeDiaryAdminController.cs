@@ -1,13 +1,18 @@
+using Internship_system.BLL.DTOs.InternshipAdmin;
+using Internship_system.BLL.DTOs.PracticeDiary;
 using Internship_system.BLL.DTOs.PracticeDiaryAdmin;
 using Internship_system.BLL.Services;
 using internship_system.Common.Enums;
+using Internship_system.Controllers.Bodies;
+using Internship_system.Controllers.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Internship_system.Controllers;
 
 [ApiController]
 [Route("admin/diary")]
-public class PracticeDiaryAdminController : ControllerBase {
+public class PracticeDiaryAdminController : Controller {
     private readonly PracticeDiaryAdminService _diaryAdminService;
 
     public PracticeDiaryAdminController(PracticeDiaryAdminService diaryAdminService) {
@@ -57,8 +62,12 @@ public class PracticeDiaryAdminController : ControllerBase {
     /// </summary>
     [HttpPost]
     [Route("{diaryId:guid}/comment")]
-    public async Task LeavePracticeDiaryComment(Guid diaryId) {
-        throw new NotImplementedException();
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    public async Task<ActionResult<CommentDto>> LeavePracticeDiaryComment(Guid diaryId, [FromBody] LeavePracticeDiaryCommentBody body) {
+        var userId = this.GetUserId();
+        var dto = new LeavePracticeDiaryCommentDto(UserId: userId, DiaryId: diaryId, body.Text);
+        var response = await _diaryAdminService.LeavePracticeDiaryComment(dto);
+        return Ok(response);
     }
 
     /// <summary>

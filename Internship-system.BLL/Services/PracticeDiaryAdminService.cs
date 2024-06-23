@@ -1,12 +1,12 @@
+using Internship_system.BLL.DTOs.InternshipAdmin;
 using Internship_system.BLL.DTOs.PracticeDiary;
 using Internship_system.BLL.DTOs.PracticeDiaryAdmin;
 using Internship_system.BLL.Exceptions;
 using internship_system.Common.Enums;
 using Internship_system.DAL.Configuration;
-using Internship_system.DAL.Data;
+using Internship_system.DAL.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
-using Xceed.Document.NET;
 
 namespace Internship_system.BLL.Services;
 
@@ -78,6 +78,30 @@ public class PracticeDiaryAdminService {
         practiceDiary.DiaryState = diaryState;
     }
 
+    public async Task<CommentDto> LeavePracticeDiaryComment(LeavePracticeDiaryCommentDto dto) {
+        var practiceDiary = await _dbContext.PracticeDiaries.FirstOrDefaultAsync(pd => pd.Id == dto.DiaryId) ??
+                            throw new NotFoundException($"Can't find practice diary with id {dto.DiaryId}");
+        var user = await _dbContext.Users.FindAsync(dto.UserId) ??
+                   throw new NotFoundException($"User with id {dto.UserId} not found");
+
+        var comment = new Comment {
+            PracticeDiary = practiceDiary,
+            InternshipProgress = null,
+            User = user,
+            RoleType = RoleType.Dean,
+            Text = dto.Text
+        };
+        _dbContext.Comments.Add(comment);
+
+        await _dbContext.SaveChangesAsync();
+
+        return new() {
+            Text = comment.Text,
+            Author = user.FullName,
+            RoleType = comment.RoleType
+        };
+    }
+
     public async Task<List<StudentListElemDto>> GetStudentsList(string fullName) {
         var students = await _dbContext
             .Students
@@ -98,11 +122,11 @@ public class PracticeDiaryAdminService {
 
     public async Task<List<PracticeDiaryDto>> GetPracticeDiariesByInternshipId(Guid internshipId) {
         var student = await _dbContext.Internships
-                    .Where(internship => internship.Id == internshipId)
-                    .Include(internship => internship.Student)
-                    .Select(internship => internship.Student)
-                    .FirstOrDefaultAsync()
-                ?? throw new NotFoundException("Internship not found");
+                          .Where(internship => internship.Id == internshipId)
+                          .Include(internship => internship.Student)
+                          .Select(internship => internship.Student)
+                          .FirstOrDefaultAsync()
+                      ?? throw new NotFoundException("Internship not found");
 
         var diaries = await _dbContext.PracticeDiaries
             .Where(pd => pd.Internship.Student == student)
