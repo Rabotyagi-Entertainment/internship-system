@@ -10,6 +10,8 @@ WORKDIR /src
 COPY ["Internship-system.API/Internship-system.API.csproj", "Internship-system.API/"]
 COPY ["Internship-system.BLL/Internship-system.BLL.csproj", "Internship-system.BLL/"]
 COPY ["Internship-system.DAL/Internship-system.DAL.csproj", "Internship-system.DAL/"]
+COPY Src/PracticeDiary_Default.docx ./Src/
+COPY Src/PracticeDiary_CourseWork.docx ./Src/
 COPY ["internship-system.Common/internship-system.Common.csproj", "internship-system.Common/"]
 RUN dotnet restore "Internship-system.API/Internship-system.API.csproj"
 COPY . .
