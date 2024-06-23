@@ -18,15 +18,8 @@ public class PracticeDiaryAdminService {
     }
 
     public async Task<MemoryStream> ExportStudentsInternshipsAsTable() {
-        var uploadDir = $"{Directory.GetCurrentDirectory()}/Uploads";
-        if (!Directory.Exists(uploadDir)) {
-            Directory.CreateDirectory(uploadDir);
-        }
-
-        var filePath = Path.Combine(uploadDir, "exportStudentsInternships.xlsx");
-
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-        var package = new ExcelPackage(new FileInfo(filePath));
+        var package = new ExcelPackage();
         var workbook = package.Workbook.Worksheets.Add("studentsInternships");
         workbook.Cells[1, 1].Value = "Fullname";
         workbook.Cells[1, 2].Value = "Group";

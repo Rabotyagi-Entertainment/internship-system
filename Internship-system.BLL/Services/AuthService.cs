@@ -65,6 +65,10 @@ public class AuthService {
         var students = new List<StudentInfo>();
         for (var row = 2; row <= worksheet.Dimension.Rows; row++) {
             var isNumber = int.TryParse(worksheet.Cells[row, 3].Text, out var courseNumber);
+            if (worksheet.Cells[row, 1].Text.IsNullOrEmpty() ||
+                worksheet.Cells[row, 2].Text.IsNullOrEmpty() ||
+                worksheet.Cells[row, 3].Text.IsNullOrEmpty())
+                continue;
             var student = new StudentInfo {
                 FullName = worksheet.Cells[row, 1].Text ?? "НЕ ЗАПОЛНЕНО",
                 CourseNumber = isNumber ? courseNumber : null,

@@ -6,6 +6,7 @@ using Internship_system.DAL.Configuration;
 using Internship_system.DAL.Data.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using OfficeOpenXml;
 using Xceed.Document.NET;
 using Xceed.Words.NET;
@@ -14,9 +15,10 @@ namespace Internship_system.BLL.Services;
 
 public class PracticeDiaryService {
     private readonly InterDbContext _interDbContext;
-
-    public PracticeDiaryService(InterDbContext interDbContext) {
+    private readonly ILogger<PracticeDiaryService> _logger;
+    public PracticeDiaryService(InterDbContext interDbContext, ILogger<PracticeDiaryService> logger) {
         _interDbContext = interDbContext;
+        _logger = logger;
     }
 
     public async Task<List<PracticeDiaryDto>> GetDiaries(Guid? userId, Guid? internshipId) {
@@ -75,7 +77,8 @@ public class PracticeDiaryService {
         var filePath = diary.DiaryType == PracticeDiaryType.Default
             ? "../internship-system.Common/Src/PracticeDiary_Default.docx"
             : "../internship-system.Common/Src/PracticeDiary_CourseWork.docx";
-
+        _logger.LogInformation($"////////////{filePath} ///////////\n");
+        _logger.LogInformation($"////////////{Directory.GetCurrentDirectory()} ///////////\n");
         var byteArray = File.OpenRead(filePath);
         var sourceDoc = DocX.Load(byteArray);
         foreach (var paragraph in sourceDoc.Paragraphs) {
