@@ -76,9 +76,9 @@ public class InternshipController : Controller {
     [HttpPost]
     [Route("company/create")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    public async Task<ActionResult<CompanyDto>> CreateNonPartnerCompany([FromBody] string name) {
+    public async Task<ActionResult<CompanyDto>> CreateNonPartnerCompany([FromBody] CreateNonPartnerCompanyBody body) {
         var userId = this.GetUserId();
-        var response = await _internshipService.CreateNonPartnerCompany(new(userId, name));
+        var response = await _internshipService.CreateNonPartnerCompany(new(userId, body.Name));
         return Ok(response);
     }
 

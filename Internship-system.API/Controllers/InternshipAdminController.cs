@@ -1,6 +1,9 @@
 using Internship_system.BLL.DTOs.Internship.Responses;
 using Internship_system.BLL.DTOs.InternshipAdmin;
 using Internship_system.BLL.Services;
+using Internship_system.Controllers.Bodies;
+using Internship_system.Controllers.Extensions;
+using Internship_system.DAL.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -80,9 +83,12 @@ public class InternshipAdminController : ControllerBase {
     [HttpPost]
     [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("progress/{internshipProgressId:guid}")]
-    public async Task CommentStudentInternshipProgress([FromBody] string comment, Guid internshipProgressId) {
-        var userId = Guid.Parse(User.Identity.Name);
-        await _internshipAdminService.CommentInternshipProgress(comment, internshipProgressId, userId);
+    public async Task CommentStudentInternshipProgress(
+        [FromBody] CommentStudentInternshipProgressBody body,
+        Guid internshipProgressId
+    ) {
+        var userId = this.GetUserId();
+        await _internshipAdminService.CommentInternshipProgress(body.Text, internshipProgressId, userId);
     }
 
     /// <summary>
@@ -91,7 +97,7 @@ public class InternshipAdminController : ControllerBase {
     [HttpGet]
     [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("company/student/{studentId:guid}")]
-    public async Task<IActionResult> GetStudentCompaniesOnly(Guid studentId) {
+    public async Task<ActionResult<List<Company>>> GetStudentCompaniesOnly(Guid studentId) {
         return Ok(await _internshipAdminService.GetStudentCompaniesOnly(studentId));
     }
 
