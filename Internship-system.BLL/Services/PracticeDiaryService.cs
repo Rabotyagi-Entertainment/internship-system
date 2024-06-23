@@ -51,6 +51,7 @@ public class PracticeDiaryService {
             TaskReportTable = d.TaskReportTable,
             StudentCharacteristics = d.StudentCharacteristics,
             CompanyName = d.Internship.Company.Name,
+            OrderNumber = d.OrderNumber,
             WorkName = d.WorkName,
             PlanTable = d.PlanTable,
             Comments = d.Comments

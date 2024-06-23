@@ -52,7 +52,7 @@ public class AuthService {
             .ToListAsync();
         foreach (var studentTelegram in tgStudents) {
             await _telegramBot.SendTextMessageAsync(new ChatId($"{studentTelegram.ChatId}"),
-                $"Внимание! нужно сдать заполнить дневник практики до {dto.DeadlineTime} \n {dto.OptionalMessage}");
+                $"Внимание! Скоро дедлайн по дневнику практики. Нужно заполнить до: {dto.DeadlineTime} \n {dto.OptionalMessage}");
         }
     }
 
