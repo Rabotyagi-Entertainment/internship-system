@@ -23,6 +23,7 @@ public static class InternshipExtensions {
                 WorkName = d.WorkName,
                 PlanTable = d.PlanTable,
                 Comments = d.Comments
+                    .OrderByDescending(c=>c.CreatedAt)
                     .Select(c => new CommentDto {
                         Text = c.Text,
                         Author = c.User.FullName,

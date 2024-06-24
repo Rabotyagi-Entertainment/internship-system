@@ -48,6 +48,14 @@ public class PracticeDiaryController : Controller {
     [Route("{internshipId}/template")]
     public async Task CreateDiary(Guid internshipId, PracticeDiaryType diaryType) {
         await _practiceDiaryService.CreateDiary(internshipId, diaryType);
+    } 
+    /// <summary>
+    /// Delete practise diary
+    /// </summary>
+    [HttpDelete]
+    [Route("{diaryId}")]
+    public async Task DeleteDiary(Guid diaryId) {
+        await _practiceDiaryService.DeleteDiary(diaryId);
     }
 
     /// <summary>

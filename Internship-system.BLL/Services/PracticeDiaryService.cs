@@ -57,6 +57,7 @@ public class PracticeDiaryService {
             WorkName = d.WorkName,
             PlanTable = d.PlanTable,
             Comments = d.Comments
+                .OrderByDescending(c=>c.CreatedAt)
                 .Select(c => new CommentDto {
                     Text = c.Text,
                     Author = c.User.FullName,
@@ -239,7 +240,16 @@ public class PracticeDiaryService {
         _interDbContext.Add(diary);
         await _interDbContext.SaveChangesAsync();
     }
-
+    
+    public async Task DeleteDiary(Guid diaryId) {
+        var diary = await _interDbContext.PracticeDiaries
+            .FirstOrDefaultAsync(s => s.Id == diaryId);
+        if (diary == null)
+            throw new NotFoundException("Diary not found");
+        _interDbContext.Remove(diary);
+        await _interDbContext.SaveChangesAsync();
+    }
+    
     public async Task EditGeneralInfo(Guid diaryId, EditGeneralInfoDto dto) {
         var diary = await _interDbContext.PracticeDiaries
             .FirstOrDefaultAsync(s => s.Id == diaryId);

@@ -146,7 +146,9 @@ public class AuthService {
         var students = await _interDbContext.StudentInfos
             .Take(100)
             .ToListAsync();
-        return students.Select(s => new LoadedStudentDto {
+        return students
+            .Where(s=>!s.AttachedAt.HasValue)
+            .Select(s => new LoadedStudentDto {
             Id = s.Id,
             FullName = s.FullName,
             Group = s.Group,

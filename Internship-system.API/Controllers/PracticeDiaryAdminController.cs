@@ -53,7 +53,7 @@ public class PracticeDiaryAdminController : Controller {
     /// </summary>
     [HttpPut]
     [Route("{diaryId:guid}/status")]
-    public async Task ChangeDiaryStatus([FromBody] DiaryState diaryState, Guid diaryId) {
+    public async Task ChangeDiaryStatus([FromQuery] DiaryState diaryState, Guid diaryId) {
         await _diaryAdminService.ChangeDiaryStatus(diaryState, diaryId);
     }
 

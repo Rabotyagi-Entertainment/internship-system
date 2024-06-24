@@ -140,6 +140,17 @@ public class InternshipService {
                           throw new NotFoundException($"User with id {dto.StudentId} not found");
             var company = await _dbContext.Companies.FindAsync(dto.CompanyId) ??
                           throw new NotFoundException($"Company with id {dto.CompanyId} not found");
+            var currentInternships = await _dbContext.Internships
+                .Where(i=>i.Student == student)
+                .Where(i => !i.EndedAt.HasValue)
+                .ToListAsync();
+            if (currentInternships.Count > 0) {
+                foreach (var currentInternship in currentInternships) {
+                    currentInternship.EndedAt = DateTime.UtcNow;
+                }
+                _dbContext.UpdateRange(currentInternships);
+            }
+
             _dbContext.Internships.Add(new() {
                 Student = student,
                 Company = company,

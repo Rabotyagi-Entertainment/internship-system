@@ -1,3 +1,4 @@
+using Internship_system.BLL.DTOs.Internship.Responses;
 using Internship_system.BLL.DTOs.InternshipAdmin;
 using Internship_system.BLL.Exceptions;
 using internship_system.Common.Enums;
@@ -191,7 +192,7 @@ public class InternshipAdminService {
             };
 
             var comments = new List<CommentDto>();
-            foreach (var comment in ip.Comments) {
+            foreach (var comment in ip.Comments.OrderByDescending(c=>c.CreatedAt)) {
                 var commentDto = new CommentDto {
                     Text = comment.Text,
                     Author = comment.User.FullName,
@@ -234,6 +235,8 @@ public class InternshipAdminService {
             .Students
             .Include(s => s.InternshipProgresses)
             .ThenInclude(ip => ip.Company)
+            .Include(student => student.Internships)
+            .ThenInclude(internship => internship.Company)
             .ToListAsync();
 
         if (query.Search != null) {
@@ -254,15 +257,20 @@ public class InternshipAdminService {
 
         List<StudentInfoDto> studentInfoList = new();
         foreach (var s in students) {
+            var currentCompany = s.Internships.FirstOrDefault(i => !i.EndedAt.HasValue);
             var studentDto = new StudentInfoDto {
                 Id = s.Id,
                 Name = s.FullName,
-                Group = s.Group
+                Group = s.Group,
+                CurrentCompany = currentCompany != null ?
+                    new CurrentCompany(currentCompany.Id, currentCompany.Company.Name, currentCompany.StartedAt, currentCompany.EndedAt) :
+                    null
             };
             foreach (var ip in s.InternshipProgresses) {
-                studentDto.Companies.Add(ip.Company.Name);
+                studentDto.Companies
+                    .Add(new CompanyWithStatusDto(ip.Company.Id, ip.Company.Name, ip.ProgressStatus));
             }
-
+            
             studentInfoList.Add(studentDto);
         }
 

@@ -18,7 +18,9 @@ public static class InternshipProgressesExtensions {
             AdditionalInfo = progress.AdditionalInfo,
             CreatedAt = progress.CreatedAt,
             EditedAt = progress.EditedAt,
-            Comments = progress.Comments.Select(c => new CommentDto {
+            Comments = progress.Comments
+                .OrderByDescending(c=>c.CreatedAt)
+                .Select(c => new CommentDto {
                 Text = c.Text,
                 Author = c.User.FullName,
                 RoleType = c.RoleType
