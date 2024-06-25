@@ -240,18 +240,23 @@ public class InternshipAdminService {
             .ToListAsync();
 
         if (query.Search != null) {
-            students = students.Where(s => s.FullName.Contains(query.Search)).ToList();
+            students = students.Where(s => s.FullName
+                .Contains(query.Search, StringComparison.CurrentCultureIgnoreCase))
+                .ToList();
         }
 
         if (query.Group != null) {
-            students = students.Where(s => s.Group == query.Group).ToList();
+            students = students
+                .Where(s => s.Group != null && s.Group.Contains(query.Group, StringComparison.CurrentCultureIgnoreCase))
+                .ToList();
         }
 
         if (query.Company != null) {
             students = students
                 .Where(s => s
                     .InternshipProgresses
-                    .Any(ip => ip.Company.Name.Contains(query.Company)))
+                    .Any(ip => ip.Company.Name
+                        .Contains(query.Company, StringComparison.CurrentCultureIgnoreCase)))
                 .ToList();
         }
 
