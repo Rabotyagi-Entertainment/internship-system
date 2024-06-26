@@ -77,19 +77,34 @@ public class AuthService {
             students.Add(student);
         }
 
-        var duplicates = await _interDbContext.StudentInfos
-            .Where(si => students
-                .Select(s=>s.FullName)
-                .Contains(si.FullName))
+        var existingStudents = await _interDbContext.StudentInfos
+            .Where(si => students.Select(s => s.FullName).Contains(si.FullName))
             .ToListAsync();
-        
-        if (duplicates.Count != 0)
-            throw new ConflictException("These students already exist: " + string.Join("\n", duplicates));
-        
-        if (students.Count > 0) {
-            _interDbContext.StudentInfos.AddRange(students);
-            await _interDbContext.SaveChangesAsync();
+
+        var newStudents = new List<StudentInfo>();
+
+        foreach (var student in students)
+        {
+            var existingStudent = existingStudents
+                .FirstOrDefault(es => es.FullName == student.FullName);
+
+            if (existingStudent != null)
+            {
+                existingStudent.Group = student.Group;
+                existingStudent.CourseNumber = student.CourseNumber;
+            }
+            else
+            {
+                newStudents.Add(student);
+            }
         }
+
+        if (newStudents.Count > 0)
+        {
+            _interDbContext.StudentInfos.AddRange(newStudents);
+        }
+
+        await _interDbContext.SaveChangesAsync();
     }
 
     public async Task<string> RegisterAsync(AccountRegisterDto accountRegisterDto) {

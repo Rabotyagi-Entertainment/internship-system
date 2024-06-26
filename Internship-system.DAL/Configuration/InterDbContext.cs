@@ -38,6 +38,22 @@ public class InterDbContext : IdentityDbContext<User, Role, Guid, IdentityUserCl
                 .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
+        
+        modelBuilder.Entity<Comment>(entity =>
+        {
+            entity.HasOne(e => e.PracticeDiary)
+                .WithMany(pd => pd.Comments)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(e => e.InternshipProgress)
+                .WithMany(ip => ip.Comments)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(e => e.User)
+                .WithMany(u=>u.Comments)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
     }
     
     public InterDbContext(DbContextOptions<InterDbContext> options) : base(options) {
