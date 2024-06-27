@@ -69,6 +69,7 @@ public class PracticeDiaryAdminService {
                                 .FirstOrDefaultAsync(pd => pd.Id == diaryId) ??
                             throw new NotFoundException($"Can't find practice diary with id {diaryId}");
         practiceDiary.DiaryState = diaryState;
+        await _dbContext.SaveChangesAsync();
     }
 
     public async Task<CommentDto> LeavePracticeDiaryComment(LeavePracticeDiaryCommentDto dto) {

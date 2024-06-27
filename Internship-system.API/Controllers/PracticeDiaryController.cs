@@ -37,8 +37,31 @@ public class PracticeDiaryController : Controller {
     [HttpGet]
     [Route("{diaryId}")]
     public IActionResult GetDiaryFile(Guid diaryId) {
-        var memoryStream = _practiceDiaryService.GetDiaryFile(diaryId).Result;
-        return File(memoryStream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "exmaple.docx");
+        var (memoryStream, name) = _practiceDiaryService.GetDiaryFile(diaryId).Result;
+        return File(memoryStream, 
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document", $"Дневник_практики_{name}.docx");
+    }
+    
+    /// <summary>
+    /// Get diaries as zip
+    /// </summary>
+    [HttpGet]
+    [Route("students/course")]
+    public IActionResult GetDiaryFile(int courseNumber) {
+        var memoryStream = _practiceDiaryService.GetZipDiariesByCourseNumber(courseNumber).Result;
+        memoryStream.Position = 0;
+        return File(memoryStream, "application/zip", $"Дневники_{courseNumber}_курс.zip");
+    }
+
+    /// <summary>
+    /// Send diary file to tg
+    /// </summary>
+    [HttpGet]
+    [Route("{diaryId}/tg")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    public async Task GetDiaryFileTg(Guid diaryId) {
+        var userId = this.GetUserId();
+        await _practiceDiaryService.GetDiaryFileTg(diaryId, userId);
     }
 
     /// <summary>

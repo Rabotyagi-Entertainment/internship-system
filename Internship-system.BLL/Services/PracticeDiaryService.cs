@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using Internship_system.BLL.DTOs.InternshipAdmin;
 using Internship_system.BLL.DTOs.PracticeDiary;
 using Internship_system.BLL.Exceptions;
@@ -8,17 +9,24 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using OfficeOpenXml;
+using Telegram.Bot;
+using Telegram.Bot.Types;
 using Xceed.Document.NET;
 using Xceed.Words.NET;
+using File = System.IO.File;
+using InputFile = Microsoft.AspNetCore.Components.Forms.InputFile;
 
 namespace Internship_system.BLL.Services;
 
 public class PracticeDiaryService {
     private readonly InterDbContext _interDbContext;
     private readonly ILogger<PracticeDiaryService> _logger;
-    public PracticeDiaryService(InterDbContext interDbContext, ILogger<PracticeDiaryService> logger) {
+    private readonly ITelegramBotClient _telegramBot;
+
+    public PracticeDiaryService(InterDbContext interDbContext, ILogger<PracticeDiaryService> logger, ITelegramBotClient telegramBot) {
         _interDbContext = interDbContext;
         _logger = logger;
+        _telegramBot = telegramBot;
     }
 
     public async Task<List<PracticeDiaryDto>> GetDiaries(Guid? userId, Guid? internshipId) {
@@ -66,7 +74,45 @@ public class PracticeDiaryService {
         }).ToList();
     }
 
-    public async Task<MemoryStream> GetDiaryFile(Guid diaryId) {
+    public async Task<MemoryStream> GetZipDiariesByCourseNumber(int courseNumber) {
+        var students = await _interDbContext.Students
+            .Where(s => s.CourseNumber ==courseNumber)
+            .ToListAsync();
+        var diaries = await _interDbContext.PracticeDiaries
+            .Where(pd => (pd.DiaryState == DiaryState.Done || pd.DiaryState == DiaryState.DeanApproved || pd.DiaryState == DiaryState.OnDeanCheck)
+                && students.Contains(pd.Internship.Student))
+            .ToListAsync();
+        var zipStream = new MemoryStream();
+        using ZipArchive archive = new ZipArchive(zipStream, ZipArchiveMode.Create, true);
+        foreach (var diary in diaries) {
+            var (stream, name) = await GetDiaryFile(diary.Id);
+            stream.Position = 0; 
+            AddMemoryStreamToZip(archive, stream, $"Дневник практики {name}.docx");
+        }
+
+        return zipStream;
+    }
+    private void AddMemoryStreamToZip(ZipArchive archive, MemoryStream stream, string entryName)
+    {
+        var entry = archive.CreateEntry(entryName);
+        using (var entryStream = entry.Open())
+        {
+            stream.CopyTo(entryStream);
+        }
+    }
+    public async Task GetDiaryFileTg(Guid diaryId, Guid userId) {
+        var (stream, _) = await GetDiaryFile(diaryId);
+        var student = await _interDbContext.Students.FindAsync(userId) ??
+                      throw new NotFoundException($"User with id {userId} not found");
+        var tgUser = await _interDbContext.StudentTelegrams
+            .FirstOrDefaultAsync(st => st.TgName == student.UserName);
+        if (tgUser == null)
+            throw new NotFoundException($"Tg with username id {student.UserName} not found");
+        stream.Position = 0; 
+        var inputOnlineFile = new InputFileStream(stream, $"Дневник практики {student.FullName}.docx");
+        await _telegramBot.SendDocumentAsync(tgUser.ChatId, inputOnlineFile);
+    }
+    public async Task<(MemoryStream stream, string fileName)> GetDiaryFile(Guid diaryId) {
         var diary = await _interDbContext.PracticeDiaries
             .Include(d => d.Internship)
             .ThenInclude(i => i.Company)
@@ -225,7 +271,7 @@ public class PracticeDiaryService {
         sourceDoc.SaveAs(ms);
         ms.Position = 0;
 
-        return ms;
+        return (ms, diary.Internship.Student.FullName);
     }
 
     public async Task CreateDiary(Guid internshipId, PracticeDiaryType diaryType) {
